@@ -1,4 +1,5 @@
 const express = require('express');
+const bodyparser = require('body-parser');
 const helmet = require('helmet');
 const xss = require('xss-clean');
 const mongoSanitize = require('express-mongo-sanitize');
@@ -11,7 +12,8 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
-
+const stripe = require("stripe")("sk_test_51MUr0rSCXoMBK86oijlwSA5ws6Pk8fNWGhTSHG6VOfRaM01Mk7yC7I7MeUunfTY4u1TvyL4lrkspamPKIImPvmp800Ma3ybMd0")
+const uuid = require("uuid").v4
 const app = express();
 
 if (config.env !== 'test') {
@@ -19,6 +21,8 @@ if (config.env !== 'test') {
   app.use(morgan.errorHandler);
 }
 
+app.use(bodyparser.urlencoded({extended: false}))
+app.use(bodyparser.json())
 // set security HTTP headers
 app.use(helmet());
 
@@ -34,6 +38,7 @@ app.use(mongoSanitize());
 
 // gzip compression
 app.use(compression());
+
 
 // enable cors
 app.use(cors());
@@ -58,5 +63,7 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
-
+app.post('/checkout',(req,res)=>{
+  console.log(req.body);
+})
 module.exports = app;
