@@ -15,7 +15,7 @@ const ApiError = require('./utils/ApiError');
 const stripe = require("stripe")("sk_test_51MUr0rSCXoMBK86oijlwSA5ws6Pk8fNWGhTSHG6VOfRaM01Mk7yC7I7MeUunfTY4u1TvyL4lrkspamPKIImPvmp800Ma3ybMd0")
 const uuid = require("uuid").v4
 const app = express();
-
+const PORT = process.env.PORT || 3000
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
@@ -63,7 +63,7 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
-app.post('/checkout',(req,res)=>{
-  console.log(req.body);
-})
+
+
+
 module.exports = app;
