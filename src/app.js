@@ -11,6 +11,7 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const userRouter = require('./routes/v1/userRouter');
 
 const app = express();
 
@@ -58,5 +59,14 @@ app.use(errorConverter);
 
 // handle error
 app.use(errorHandler);
+
+//user
+app.use('/users',userRouter)
+
+app.get("/api",(req,res)=>{
+  res.json({
+    message : "",
+  });
+});
 
 module.exports = app;
