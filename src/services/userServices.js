@@ -1,5 +1,5 @@
 const { connect } = require('mongoose');
-const userModel = require('../models/user');
+const userModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 

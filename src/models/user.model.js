@@ -34,16 +34,7 @@ const userSchema = mongoose.Schema(
         }
       },
       private: true, // used by the toJSON plugin
-    },
-    role: {
-      type: String,
-      enum: roles,
-      default: 'user',
-    },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
-    },
+    }
   },
   {
     timestamps: true,
