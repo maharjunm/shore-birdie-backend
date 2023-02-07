@@ -60,13 +60,7 @@ app.use(errorConverter);
 // handle error
 app.use(errorHandler);
 
-//user
+//user-auth
 app.use('/users',userRouter)
-
-app.get("/api",(req,res)=>{
-  res.json({
-    message : "",
-  });
-});
 
 module.exports = app;
