@@ -1,0 +1,11 @@
+const express=require('express');
+
+
+const router=express.Router();
+
+router.route('/').post((req,res)=>{
+  console.log("Listening on Port");
+  console.log(req);
+});
+
+module.exports = router;

@@ -59,4 +59,8 @@ app.use(errorConverter);
 // handle error
 app.use(errorHandler);
 
+app.post("/v1/jobs",(req,res)=>{
+  console.log(req);
+
+})
 module.exports = app;
