@@ -11,7 +11,7 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
-const userRouter = require('./routes/v1/userRouter');
+const router = require('./routes/v1/user.route');
 
 const app = express();
 
@@ -61,6 +61,6 @@ app.use(errorConverter);
 app.use(errorHandler);
 
 //user-auth
-app.use('/users',userRouter)
+app.use('/user',router);
 
 module.exports = app;
