@@ -10,7 +10,7 @@ const defaultRoutes = [
     route: userRoute,
   },
   {
-    path: '/jobs',
+    path: '/job',
     route: jobRoute
   }
 ];

@@ -1,12 +1,9 @@
 const express=require('express');
-
+const { jobController }=require('../../controllers/index');
 
 const router=express.Router();
 
-router.route('/').post((req,res)=>{
-  console.log("Listening on Port");
-  console.log(req.body);
-  
-});
+router.route('/').post(jobController.CreateJob);
+
 
 module.exports = router;
