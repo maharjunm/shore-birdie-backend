@@ -2864,10 +2864,17 @@ fs.realpath@^1.0.0:
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8= sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
 
+<<<<<<< HEAD
 ftp@^0.3.10:
   version "0.3.10"
   resolved "https://registry.npmjs.org/ftp/-/ftp-0.3.10.tgz"
   integrity sha1-kZfYYa2BQvPmPVqDv+TFn3MwiF0= sha512-faFVML1aBx2UoDStmLwv2Wptt4vw5x03xxX172nhA5Y5HBshW5JweqQ2W4xL4dezQTG8inJsuYcpPHHU3X5OTQ==
+=======
+"ftp@^0.3.10":
+  "integrity" "sha1-kZfYYa2BQvPmPVqDv+TFn3MwiF0= sha512-faFVML1aBx2UoDStmLwv2Wptt4vw5x03xxX172nhA5Y5HBshW5JweqQ2W4xL4dezQTG8inJsuYcpPHHU3X5OTQ=="
+  "resolved" "https://registry.npmjs.org/ftp/-/ftp-0.3.10.tgz"
+  "version" "0.3.10"
+>>>>>>> 2fb8be13c3070191bc2ea1e2b6612fe55d2ae76a
   dependencies:
     readable-stream "1.1.x"
     xregexp "2.0.0"
