@@ -17,7 +17,7 @@ const JobSchema=mongoose.Schema(
       country: String,
       region: String
     },
-    quaification:String,
+    qualification:String,
     jobDescription: String,
     organizationType: String,
     salary: {

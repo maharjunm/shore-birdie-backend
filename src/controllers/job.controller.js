@@ -7,6 +7,11 @@ const CreateJob= async (req,res)=>{
 
 }
 
+const GetJob=async (req,res)=>{
+  const jsonObject=await jobService.getJob();
+  res.send(jsonObject);
+}
 module.exports={
-  CreateJob
+  CreateJob,
+  GetJob
 }
