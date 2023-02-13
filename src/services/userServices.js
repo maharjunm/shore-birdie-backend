@@ -9,7 +9,7 @@ const bcryptjs = require('bcryptjs');
 
 const signup = async (req,res)=>{
 
-  const {username,email,password} = userBody;
+  const {username,email,password} = req.body;
   try{
     const exsistingUser = await userModel.findOne({email : email});
     if(exsistingUser){
