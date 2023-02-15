@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
-// define the jobDet schema
-const jobDetSchema = new Schema({
+const jobSchema = new Schema({
   job: {
     title: String,
     qualifications: [String],
@@ -39,8 +37,5 @@ const jobDetSchema = new Schema({
   },
   
 });
-
-
-const Job = mongoose.model('job', jobDetSchema);
-
+const Job = mongoose.model('job', jobSchema);
 module.exports = Job;
