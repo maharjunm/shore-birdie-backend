@@ -1,58 +1,46 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-
-const JobSchema=mongoose.Schema(
-  {
-    jobTitle: {
+// define the jobDet schema
+const jobDetSchema = new Schema({
+  job: {
+    title: String,
+    qualifications: [String],
+    duties: [String],
+    experience: String,
+    description: String,
+    discipline: String,
+    type:{
       type:String,
-      required:true
+      enum:['full-time','part-time','contract','internship']
     },
-    companyName: {
-      type:String,
-      required:true
-    },
-    companyLogo: String,
-    adress: {
-      city: String,
-      country: String,
-      region: String
-    },
-    qualification:String,
-    jobDescription: String,
-    organizationType: String,
-    salary: {
-      type:Number,
-      required:true
-    },
+    category: String,
+  },
+  company: {
+    name: String,
+    companyType: String,
+    logo: String,
+  },
+  location: {
+    city: String,
+    country: String,
+    region: String,
+  },
+  dates: {
     postingDate: Date,
     expiryDate: Date,
-    applicationClosingDate: Date,
-    applicationRemovalDate: Date,
-    duration: {
-      type:String,
-      enum:['fixed','permanent']
-    },
-    discipline: String,
-    organization: String,
-    jobType: { 
-      type: String, 
-      enum: ['full-time', 'part-time', 'contract', 'internship'] 
-    },
-    category: { type: String},
-    contactEmail:{
-      type: String,
-      required:true,
-      lowercase:true
-    },
-    isActive: { 
-      type: Boolean, 
-      default: true 
-    }
-}
-
-);
+    closingDate: Date,
+    removingJobDate: Date,
+  },
+  salary: {
+    sal: Number,
+    hours: Number,
+    companyType: String,
+  },
+  
+});
 
 
-const Job=new mongoose.model('Job',JobSchema);
+const Job = mongoose.model('job', jobDetSchema);
 
 module.exports = Job;
