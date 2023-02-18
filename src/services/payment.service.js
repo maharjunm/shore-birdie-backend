@@ -7,6 +7,7 @@ const bodyparser = require('body-parser')
 
 
 
+
 /**
  * Create a user
  * @param {Object} paymentBody
@@ -17,8 +18,9 @@ const createPayment = async (paymentBody) => {
   if (await Payment.isProductTaken(token.email)) {
     throw new ApiError(httpStatus.BAD_REQUEST, 'Email  has already purchased the product');
   }
+
   try{
-    
+
     const customer = stripe.customers.create({
       email: token.email,
       source:token.id
@@ -44,8 +46,8 @@ const createPayment = async (paymentBody) => {
         },
       },
     );
-    console.log("success");
-    return Payment.create(paymentBody);
+    console.log("success ra");
+    // return Payment.create(paymentBody);
 
   }catch(err){
     console.log(err);
@@ -54,6 +56,4 @@ const createPayment = async (paymentBody) => {
 
 };
 
-module.exports = {
-  createPayment
-};
+module.exports = {createPayment};

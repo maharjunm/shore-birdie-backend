@@ -18,6 +18,6 @@ router
   .delete(validate(userValidation.deleteUser), userController.deleteUser);
   
 router.post('/signup', signup);
-router.post('/login', login);
+router.post('/login', login); 
   
 module.exports = router;
