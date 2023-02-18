@@ -28,23 +28,68 @@ const paymentSchema = mongoose.Schema(
         }
       },
     },
-    price: Number,
-    hosting_time:Number,
+    price: {
+      type: Number,
+      required: true,
+    },
+    hosting_time:{
+      type: Number,
+      required: true,
+    },
     features:[{
       name:String,
       value:Boolean,
     }],
     address: {
-      address_city: String,
-      address_country: String,
-      address_line1: String
+      address_city: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      address_country: {
+        type: String,
+        required: true,
+        trim: true,
+      },
+      address_line1: {
+        type: String,
+        required: true,
+        trim: true,
+      }
     },
-    card_number: Number,
-    expiry_date: Date,
-    cvc: Number
+    card_number: {
+      type: Number,
+      required: true,
+    },
+    expiry_date: {
+      type: Date,
+      required: true
+    },
+    cvc: {
+      type: Number,
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
   }  
     
 );
+
+// add plugin that converts mongoose to json
+paymentSchema.plugin(toJSON);
+paymentSchema.plugin(paginate);
+
+/**
+ * Check if email is taken product
+ * @param {string} email - The user's email
+ * @param {ObjectId} [excludeUserId] - The id of the user to be excluded if he again taking product in future 
+ * @returns {Promise<boolean>}
+ */
+paymentSchema.statics.isProductTaken = async function (email, excludePaymentId) {
+  const payment = await this.findOne({ email, _id: { $ne: excludePaymentId } });
+  return !!payment;
+};
 
 const Payment = mongoose.model('Payment', paymentSchema);
 
