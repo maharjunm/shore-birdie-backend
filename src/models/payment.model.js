@@ -32,12 +32,12 @@ const paymentSchema = mongoose.Schema(
     hosting_time:Number,
     features:[{
       name:String,
-      value:boolean,
+      value:Boolean,
     }],
     address: {
       address_city: String,
       address_country: String,
-      address_line1
+      address_line1: String
     },
     card_number: Number,
     expiry_date: Date,

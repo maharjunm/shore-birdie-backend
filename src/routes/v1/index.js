@@ -11,7 +11,7 @@ const defaultRoutes = [
     route: userRoute,
   },
   {
-    path:'/payments',
+    path:'/checkout',
     route: paymentRoute,
   }
 ];
