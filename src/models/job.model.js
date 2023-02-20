@@ -2,39 +2,46 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const jobSchema = new Schema({
   job: {
-    title: String,
-    qualifications: [String],
-    duties: [String],
-    experience: String,
-    description: String,
-    discipline: String,
-    type:{
-      type:String,
-      enum:['full-time','part-time','contract','internship']
-    },
-    category: String,
+    title: { type: String, required: true },
+    experience: { type: String, required: true },
+    discipline: { type: String, required: true },
+    type: { type: String, enum: ['Full-time', 'Part-time', 'Contract', 'Internship'], required: true },
+    qualification: { type: String, required: true },
   },
   company: {
-    name: String,
-    companyType: String,
-    logo: String,
+    name: { type: String, required: true },
+    companyType: { type: String, required: true },
+    logo: { type: String, required: true },
   },
   location: {
-    city: String,
-    country: String,
-    region: String,
+    city: { type: String, required: true },
+    country: { type: String, required: true },
+    state: { type: String, required: true },
+    region: { type: String, required: true },
   },
   dates: {
-    postingDate: Date,
-    expiryDate: Date,
-    closingDate: Date,
-    removingJobDate: Date,
+    postingDate: { type: Date, required: true },
+    expiryDate: { type: Date, required: true },
+    closingDate: { type: Date, required: true },
+    removingDate: { type: Date, required: true },
   },
   salary: {
-    sal: Number,
-    hours: Number,
-    companyType: String,
+    sal: { type: Number, required: true },
+    hours: { type: Number, required: true },
+    companyType: { type: String, enum: ['Annual', 'Regular', 'Monthly', 'Quarterly'], required: true },
   },
+  qualifications:[{
+    value:String,
+    id:String,
+  }],
+  duties:[{
+    value:String,
+    id:String,
+  }],
+  contact:{
+    email:String,
+    employeeEmail:String,
+  }
   
 });
 const Job = mongoose.model('job', jobSchema);

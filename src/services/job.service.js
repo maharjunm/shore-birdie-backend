@@ -1,4 +1,4 @@
-const { Job, User }=require('../models/index');
+const { Job }=require('../models/index');
 
 const createJob= async (jobBody)=>{
   const job=new Job(jobBody);
