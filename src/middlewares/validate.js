@@ -4,7 +4,6 @@ const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 
 const validate = (schema) => (req, res, next) => {
-  console.log("okay1");
   const validSchema = pick(schema, ['params', 'query', 'body']);
   const object = pick(req, Object.keys(validSchema));
   const { value, error } = Joi.compile(validSchema)
@@ -16,8 +15,6 @@ const validate = (schema) => (req, res, next) => {
     return next(new ApiError(httpStatus.BAD_REQUEST, errorMessage));
   }
   Object.assign(req, value);
-  console.log("okay2");
   return next();
 };
-
 module.exports = validate;
