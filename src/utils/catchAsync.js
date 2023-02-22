@@ -1,5 +1,5 @@
-const catchAsync = (fn) => (req, res) => {
-  Promise.resolve(fn(req, res)).catch((err) => console.log(err));
+const catchAsync = (fn) => (req, res, next) => {
+  Promise.resolve(fn(req, res, next)).catch((err) => next(err));
 };
 
 module.exports = catchAsync;
