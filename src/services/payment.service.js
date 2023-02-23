@@ -15,12 +15,7 @@ const createPayment = async (paymentBody) => {
         email: token.email,
         source:token.id
   });
-  const paymentIntent = await stripe.paymentIntents.create({
-    amount:product.price * 100,
-    currency:'eur',
-    payment_method_type:['card'],
-
-  });
+  
   return {
     "title":"stripe payment info",
     "status":"success",

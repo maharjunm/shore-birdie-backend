@@ -8,4 +8,5 @@ const router = express.Router();
   router
     .route('/')
     .post(validate(paymentValidation.createPayment),  paymentController.createPayment)
+    
 module.exports = router;
