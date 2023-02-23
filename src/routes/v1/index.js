@@ -4,7 +4,6 @@ const userRoute = require('./user.route');
 const testRoute = require('./test.route');
 const config = require('../../config/config');
 const jobRoute=require('./job.route');
-const testRoute=require('./test.route');
 const userRouter = require('./userRouter');
 const router = express.Router();
 
