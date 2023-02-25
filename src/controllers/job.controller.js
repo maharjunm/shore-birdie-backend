@@ -1,6 +1,7 @@
 const { jobService } =require('../services/index');
 
 const CreateJob= async (req,res)=>{
+  console.log(req.body);
   const job=await jobService.createJob(req.body);
   res.status(201).send(job);
 
