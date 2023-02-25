@@ -1,10 +1,10 @@
-const {Contact} =require('../models/index');
+const { contactService }=require('../services/index');
 
 const CreateContact=async (req,res)=>{
-  const contact=await contactServices.createContact(req.body);
-  res.send(contact);
+  const contact=await contactService.createContact(req.body);
+  res.status(201).send(contact);
 }
 
-module.export={
+module.exports={
   CreateContact
 }

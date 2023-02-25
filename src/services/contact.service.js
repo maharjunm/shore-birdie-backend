@@ -2,9 +2,9 @@ const { Contact }=require('../models/index');
 
 const createContact=async (reqBody)=>{
   const contact=new Contact(reqBody);
-  contact.save();
+  await contact.save();
   return contact;
 }
-module.export={
+module.exports={
   createContact
 }
