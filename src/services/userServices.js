@@ -2,6 +2,7 @@ const { connect } = require('mongoose');
 const userModel = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
+const { auth } = require('../config/config');
 
 //sign-up code
 
@@ -24,7 +25,7 @@ const signup = async (req,res)=>{
       username :username
     });
 
-    const token = jwt.sign({email :result.email,id : result._id},process.env.SECRET_KEY);
+    const token = jwt.sign({email :result.email,id : result._id},auth);
     res.status(201).json({token :token});
 
   }
@@ -48,17 +49,18 @@ const login = async (req,res)=>{
 
     const matchPassword = await bcryptjs.compare(password,exsistingUser.password);
 
+
     if(!matchPassword){
       return res.status(400).json({message : "Given Password is Wrong"});
     }
 
-    const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},process.env.SECRET_KEY);
+    const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
     res.status(200).json({ token :token});
 
-    res.cookie("jwtoken",token,{
-      expires : new Date(Date.now() + 25892000000),
-      httpOnly : true
-    });
+    res.cookie('JWTOKEN',token,{
+      expires: new Date(Date.now() + 25892000000),
+      httpOnly: true
+    })
     
   }
   catch(error){
@@ -68,8 +70,8 @@ const login = async (req,res)=>{
 }
 
 const logout = async (req,res)=>{
-  res.clearCookie('jwtoken',{path:'/'});
-  res.status(200).send('uesr Logout');
+  res.clearCookie('JWTOKEN',{path:'/'})
+  res.status(200).send('user Logout');
 }
 
 module.exports = {

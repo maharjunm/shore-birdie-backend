@@ -6,7 +6,7 @@ userRouter.post('/signup', signup);
 
 userRouter.post('/login', login);
 
-userRouter.get('/logout', logout);
+userRouter.post('/logout', logout);
 
 userRouter.get('/',(req,res)=>{
   res.json({
