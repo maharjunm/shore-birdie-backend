@@ -9,7 +9,12 @@ const envVarsSchema = Joi.object()
     NODE_ENV: Joi.string().valid('production', 'development', 'test') ,
     PORT: Joi.number().default(3000),
     MONGODB_URL: Joi.string().required().description('Mongo DB url'),
-    STRIPE_SECRET_KEY: Joi.string().required().description('Stripe Private key')
+    STRIPE_SECRET_KEY: Joi.string().required().description('Stripe Private key'),
+    AWS_ACCESS_KEY: Joi.string().required(),
+    AWS_SECRET_ACCESS_KEY: Joi.string().required(),
+    AWS_REGION: Joi.string().required(),
+    FROM_EMAIL: Joi.string().required(),
+    TO_EMAIL: Joi.string().required()
   })
   .unknown();
 
@@ -23,6 +28,11 @@ module.exports = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
   stripekey: envVars.STRIPE_SECRET_KEY,
+  accesskey: envVars.AWS_ACCESS_KEY,
+  secretKey: envVars.AWS_SECRET_ACCESS_KEY,
+  region: envVars.AWS_REGION,
+  fromemail: envVars.FROM_EMAIL,
+  toemail: envVars.TO_EMAIL,
   mongoose: {
     url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     options: {
