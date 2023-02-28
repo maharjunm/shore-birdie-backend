@@ -9,7 +9,8 @@ const envVarsSchema = Joi.object()
     NODE_ENV: Joi.string().valid('production', 'development', 'test') ,
     PORT: Joi.number().default(3000),
     MONGODB_URL: Joi.string().required().description('Mongo DB url'),
-    STRIPE_SECRET_KEY: Joi.string().required().description('Stripe Private key')
+    STRIPE_SECRET_KEY: Joi.string().required().description('Stripe Private key'),
+    AUTH_SECRET_KEY: Joi.string().required().description('auth secret key'),
   })
   .unknown();
 
@@ -23,6 +24,7 @@ module.exports = {
   env: envVars.NODE_ENV,
   port: envVars.PORT,
   stripekey: envVars.STRIPE_SECRET_KEY,
+  auth: envVars.AUTH_SECRET_KEY,
   mongoose: {
     url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     options: {
