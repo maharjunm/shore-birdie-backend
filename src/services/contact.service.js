@@ -3,33 +3,39 @@ const config=require('../config/config');
 const AWS=require('aws-sdk');
 
 const send=async (reqBody)=>{
-  AWS.config.update({
+  const ses= new AWS.SES({
     accessKeyId: config.accesskey,
     secretAccessKey: config.secretKey,
     region: config.region
   });
-  const transporter = nodemailer.createTransport({
-  SES: new AWS.SES({
-    apiVersion: "2010-12-01",
-  }),
-  });
 
-  var mailOptions = {
-    from: config.fromemail,
-    to: config.toemail,
-    subject: 'A query from '+reqBody.name,
-    text: 'It is a query in your app shore-birdie from the mailId:\n ' +reqBody.email +' \nfrom the company name registered as:\n '+ reqBody.companyName + ' \nhave the following query:\n ' +'"'+reqBody.query+'"'
-  };
+  const sendEmail = async () => {
+    const params = {
+        Destination: {
+            ToAddresses: [config.toemail]
+        },
+        Message: {
+            Body: {
+                Text: {
+                    Data: 'It is a query in your app shore-birdie from the mailId:\n ' +reqBody.email +' \nfrom the company name registered as:\n '+ reqBody.companyName + ' \nhave the following query:\n ' +'"'+reqBody.query+'"'
+                }
+            },
+            Subject: {
+                Data: 'Message from '+reqBody.name
+            }
+        },
+        Source: config.fromemail
+    };
 
-  transporter.sendMail(mailOptions,(error,info)=>{
-     if (error) {
-      console.log(error);
-    }else {
-      console.log('Email sent: ' + info.response);
+    try {
+        const result = await ses.sendEmail(params).promise();
+        console.log(result.MessageId);
+    } 
+    catch (err) {
+        console.log(err);
     }
-    return info.response;
-  });
-
+  };
+  sendEmail();
 }
 
 module.exports={

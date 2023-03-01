@@ -12,7 +12,6 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
-const userRouter = require('./routes/userRouter');
 
 const app = express();
 if (config.env !== 'test') {
@@ -39,8 +38,5 @@ app.use((req, res, next) => {
 app.use(errorConverter);
 app.use(errorHandler);
 
-
-//user-auth
-app.use('/user',userRouter);
 
 module.exports = app;

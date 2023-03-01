@@ -14,7 +14,8 @@ const envVarsSchema = Joi.object()
     AWS_SECRET_ACCESS_KEY: Joi.string().required(),
     AWS_REGION: Joi.string().required(),
     FROM_EMAIL: Joi.string().required(),
-    TO_EMAIL: Joi.string().required()
+    TO_EMAIL: Joi.string().required(),
+    AUTH_SECRET_KEY: Joi.string().required().description('auth secret key'),
   })
   .unknown();
 
@@ -33,6 +34,7 @@ module.exports = {
   region: envVars.AWS_REGION,
   fromemail: envVars.FROM_EMAIL,
   toemail: envVars.TO_EMAIL,
+  auth: envVars.AUTH_SECRET_KEY,
   mongoose: {
     url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     options: {

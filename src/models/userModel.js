@@ -1,9 +1,10 @@
+const { object } = require('joi');
 const mongoose = require('mongoose');
 
 const UserSchema = mongoose.Schema({
   username :{
     type : String,
-    required :true
+    required :true 
   },
   password :{
     type : String,
@@ -13,7 +14,11 @@ const UserSchema = mongoose.Schema({
     type : String,
     unique : true,
     required : true
-  }
+  },
+  token :{
+    type : String,
+    // required : true
+  },
 } ,{timestamps : true});
 
 module.exports = mongoose.model("user", UserSchema);

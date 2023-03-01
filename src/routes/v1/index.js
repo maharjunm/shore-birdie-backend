@@ -5,6 +5,7 @@ const testRoute = require('./test.route');
 const config = require('../../config/config');
 const jobRoute=require('./job.route');
 const contactRoute=require('./contact.route');
+const userRouter = require('./userRouter');
 const router = express.Router();
 
 const defaultRoutes = [
@@ -14,11 +15,23 @@ const defaultRoutes = [
   },
   {
     path: '/job',
-    route: jobRoute
+    route: jobRoute,
   },
   {
-    path:'/contact',
-    route: contactRoute 
+    path:'/checkout',
+    route: paymentRoute,
+  },
+  {
+    path: '/test',
+    route: testRoute
+  },
+  {
+    path: '/user',
+    route: userRouter,
+  },
+  {
+    path: '/contact',
+    route: contactRoute,
   }
 ];
 
