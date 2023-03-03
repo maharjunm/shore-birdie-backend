@@ -1,4 +1,3 @@
-const nodemailer=require('nodemailer');
 const config=require('../config/config');
 const AWS=require('aws-sdk');
 
