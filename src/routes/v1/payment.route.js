@@ -8,6 +8,7 @@ const router = express.Router();
 
   router
     .route('/')
+    // .post(validate(paymentValidation.createPayment),paymentController.createPayment)
     .post((req,res)=>{
       console.log("body" ,req.body);
       const {token ,product} = req.body;
@@ -20,6 +21,14 @@ const router = express.Router();
           "product":product
         }
       });
+    })
+    .get(async (req,res)=>{
+      const chary= await Product.find();
+      res.json({
+        "title":"payment details info",
+        "status":"success",
+        "result": chary
+      })
     })
     
 module.exports = router;
