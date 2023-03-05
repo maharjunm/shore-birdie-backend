@@ -3,8 +3,6 @@ const { Payment } = require('../models');
 const ApiError = require('../utils/ApiError');
 const uuid = require("uuid").v4
 const bodyparser = require('body-parser')
-const config = require('../config/config')
-const stripe = require("stripe")(config.stripekey)
 
 const createPayment = async (paymentBody) => {
   const { token, product } = paymentBody;
