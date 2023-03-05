@@ -19,20 +19,32 @@ const createPayment = async (paymentBody) => {
       }
     }
   }
-  Payment.create(paymentBody);
-  const customer = await stripe.customers.create({
+  try{
+    Payment.create(paymentBody);
+    const customer = await stripe.customers.create({
         email: token.email,
         source:token.id
-  }).catch((err) => { console.error(' STRIPE ERROR: ', error); })
-  console.log("customer",customer);
-  return {
-    "title":"stripe payment info",
-    "status":"success",
-    "information":{
-      "token":token,
-      "product":product
-    }
-  };
+    }).catch((err) => { console.error(' STRIPE ERROR: ', error); })
+    console.log("customer",customer);
+    return {
+      "title":"stripe payment info",
+      "status":"success",
+      "information":{
+        "msg":"payment successfull",
+        "token":token,
+        "product":product
+      }
+    };
+  }catch(err){
+    return {
+      "title":"stripe payment info",
+      "status":"failed",
+      "information":{
+        "msg":"payment failed",
+        "error":err,
+      }
+    };
+  }
 };
 
 const getPayments = async (role)=>{

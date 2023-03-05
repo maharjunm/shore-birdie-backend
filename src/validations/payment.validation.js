@@ -14,7 +14,7 @@ const createPayment = {
               address_line1:Joi.string().required(),
               address_line1_check: Joi.string().required(),
               address_line2: Joi.string(),
-              address_state: Joi.number(),
+              address_state: Joi.number() || Joi.string(),
               address_zip: Joi.number().required(),
               address_zip_check: Joi.string(),
               brand: Joi.string(),
