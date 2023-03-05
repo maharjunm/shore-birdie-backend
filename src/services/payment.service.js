@@ -1,7 +1,9 @@
 const httpStatus = require('http-status');
 const { Payment } = require('../models');
 const ApiError = require('../utils/ApiError');
+const config = require('../config/config');
 const uuid = require("uuid").v4
+const stripe = require("stripe")(config.stripekey);
 const bodyparser = require('body-parser')
 
 const createPayment = async (paymentBody) => {
