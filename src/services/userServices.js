@@ -35,7 +35,6 @@ const signup = async (req,res)=>{
   }
 
 }
-// login code
 
 const login = async (req,res)=>{
 

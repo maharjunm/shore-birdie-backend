@@ -1,5 +1,4 @@
 const { jobService } =require('../services/index');
-const { Job }=require('../models/index');
 
 const CreateJob= async (req,res)=>{
   console.log(req.body);
