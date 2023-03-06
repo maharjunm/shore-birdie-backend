@@ -10,26 +10,5 @@ const router = express.Router();
     .route('/')
     .post(validate(paymentValidation.createPayment),paymentController.createPayment)
     .get(paymentController.getPayments);
-    // .post((req,res)=>{
-    //   console.log("body" ,req.body);
-    //   const {token ,product} = req.body;
-    //   Product.create(product);
-    //   res.json({
-    //     "title":"stripe payment info",
-    //     "status":"success",
-    //     "information":{
-    //       "token":token,
-    //       "product":product
-    //     }
-    //   });
-    // })
-    // .get(async (req,res)=>{
-    //   const chary= await Product.find();
-    //   res.json({
-    //     "title":"payment details info",
-    //     "status":"success",
-    //     "result": chary
-    //   })
-    // })
-    
+   
 module.exports = router;
