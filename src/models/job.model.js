@@ -6,7 +6,6 @@ const jobSchema = new Schema({
   job: {
     title: { type: String, required: true },
     experience: { type: String, required: true },
-    discipline: { type: String, required: true },
     type: { type: String, enum: ['Full-time', 'Part-time', 'Contract', 'Internship'], required: true },
     qualification: { type: String, required: true },
   },
@@ -43,6 +42,14 @@ const jobSchema = new Schema({
   contact:{
     email:String,
     employeeEmail:String,
+  },
+  discipline: {
+    type: [String],
+    required: true
+  },
+  status:{
+    type:String,
+    enum: ['Approved','Rejected','Pending'],
   }
   
 });
