@@ -14,7 +14,7 @@ const createPayment = {
               address_line1:Joi.string().required(),
               address_line1_check: Joi.string().required(),
               address_line2: Joi.string(),
-              address_state: Joi.number().required(),
+              address_state: Joi.number() || Joi.string(),
               address_zip: Joi.number().required(),
               address_zip_check: Joi.string(),
               brand: Joi.string(),
@@ -36,9 +36,10 @@ const createPayment = {
           used: Joi.boolean(),
       },
       product: {
-        name: Joi.string().required(),
-        price: Joi.number().required(),
-        description: Joi.string().required(),
+        type: Joi.string().required(),
+        amount: Joi.number().required(),
+        hostingTime: Joi.number().required(),
+        offers: Joi.array().required(),
       }
   }),
 };
