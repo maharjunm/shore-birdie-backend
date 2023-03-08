@@ -35,10 +35,7 @@ const jobSchema = new Schema({
     value:String,
     id:String,
   }],
-  discipline:[{
-    value:String,
-    id:String,
-  }],
+  discipline:[String],
   duties:[{
     value:String,
     id:String,
