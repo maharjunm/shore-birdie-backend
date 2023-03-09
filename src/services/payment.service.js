@@ -8,7 +8,7 @@ const bodyparser = require('body-parser')
 
 const createPayment = async (paymentBody) => {
   const { token, product } = paymentBody;
-  console.log("product:" ,product);
+
   if (token.email && (await Payment.isProductTaken(token.email))) {
     return {
       "title":"stripe payment info",
@@ -25,7 +25,7 @@ const createPayment = async (paymentBody) => {
         email: token.email,
         source:token.id
     }).catch((err) => { console.error(' STRIPE ERROR: ', error); })
-    console.log("customer",customer);
+
     return {
       "title":"stripe payment info",
       "status":"success",
@@ -48,7 +48,6 @@ const createPayment = async (paymentBody) => {
 };
 
 const getPayments = async (role)=>{
-  console.log("role",role);
   if(role!="admin"){
     return {
       "title":"stripe payments",
