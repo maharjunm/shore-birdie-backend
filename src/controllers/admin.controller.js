@@ -4,6 +4,7 @@ const { adminServices }=require('../services/index');
 
 const GetJobs=async (req,res)=>{
   const jobs= await adminServices.getJob(req.body);
+  console.log(jobs);
   res.send(jobs);
 }
 const updateStatus=async (req,res)=>{

@@ -2,7 +2,7 @@ const express= require('express');
 const { Job }=require('../models/index');
 const mongoose=require('mongoose');
 const getJob= async()=>{
-  return Job.find();
+  return Job.find({status:'Pending'});
 }
 const updateJobStatus= async(jobId,status)=>{
   try {
