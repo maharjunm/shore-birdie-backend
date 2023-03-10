@@ -54,13 +54,17 @@ const login = async (req,res)=>{
     }
 
     const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
-    res.status(200).json({ token :token});
-
+    
     res.cookie('JWTOKEN',token,{
       expires: new Date(Date.now() + 25892000000),
       httpOnly: true
-    })
+    });
     
+    res.status(200).json(
+      { token :token,
+        username: exsistingUser.username
+      }
+    );
   }
   catch(error){
     console.log(error)

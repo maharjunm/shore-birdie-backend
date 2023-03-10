@@ -6,6 +6,8 @@ const config = require('../../config/config');
 const jobRoute=require('./job.route');
 const contactRoute=require('./contact.route');
 const userRouter = require('./userRouter');
+const adminRouter =require('./admin.router');
+
 const router = express.Router();
 
 const defaultRoutes = [
@@ -32,6 +34,10 @@ const defaultRoutes = [
   {
     path: '/contact',
     route: contactRoute,
+  },
+  {
+    path:'/admin',
+    route: adminRouter,
   }
 ];
 

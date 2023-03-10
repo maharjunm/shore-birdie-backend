@@ -43,6 +43,14 @@ const jobSchema = new Schema({
   contact:{
     email:String,
     employeeEmail:String,
+  },
+  discipline: {
+    type: [String],
+    required: true
+  },
+  status:{
+    type:String,
+    enum: ['Approved','Rejected','Pending'],
   }
   
 });
