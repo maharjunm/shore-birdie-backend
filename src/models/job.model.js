@@ -48,6 +48,10 @@ const jobSchema = new Schema({
     type: [String],
     required: true
   },
+  createdby: {
+    name: String,
+    date: Date,
+  },
   status:{
     type:String,
     enum: ['Approved','Rejected','Pending'],
