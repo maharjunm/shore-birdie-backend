@@ -51,7 +51,6 @@ const createPayment = async (paymentBody) => {
 const setPaymentStatus = async (email) =>{
   try{
     const status = await Payment.updatePaymentStatus(email);
-    console.log(status);
     const message = status.nModified == 0 ? "Already upto date" : "successfully updated";
     return {
       "status":message
