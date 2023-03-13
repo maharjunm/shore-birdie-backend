@@ -10,5 +10,8 @@ const router = express.Router();
     .route('/')
     .post(validate(paymentValidation.createPayment),paymentController.createPayment)
     .get(paymentController.getPayments);
+  router
+    .route('/update')
+    .get(paymentController.setPaymentStatus);
    
 module.exports = router;

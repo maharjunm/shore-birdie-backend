@@ -10,7 +10,12 @@ const getPayments = catchAsync(async (req,res) => {
   const payments = await paymentService.getPayments(req.query.role);
   res.status(httpStatus.CREATED).send(payments);
 })
+const setPaymentStatus = catchAsync(async (req,res) =>{
+  const status = await paymentService.setPaymentStatus(req.query.email);
+  res.status(httpStatus.CREATED).send(status);
+})
 module.exports = {
   createPayment,
-  getPayments
+  getPayments,
+  setPaymentStatus
 };

@@ -4,7 +4,15 @@ const { toJSON, paginate } = require('./plugins');
 
 
 const paymentSchema = mongoose.Schema(
-  { 
+  {
+    expiryDate:{
+      type: Date,
+      required: true,
+    },
+    status: {
+      type: Boolean,
+      required: true,
+    },
     token: {
       email: {
         type: String,
@@ -131,6 +139,21 @@ paymentSchema.statics.getPayments = async function(){
   return payments;
 }
 
+paymentSchema.statics.updatePaymentStatus = async function(email){
+  const updated = await this.updateOne(
+    {
+      'token.email': email,
+      'status': true,
+      'expiryDate': { $lt: Date.now() }
+    },
+    {
+      $set :{
+        'status':false,
+      }
+    }
+  );
+  return updated;
+}
 const Payment = mongoose.model('Payment', paymentSchema);
 
 module.exports = Payment;

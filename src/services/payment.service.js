@@ -20,6 +20,8 @@ const createPayment = async (paymentBody) => {
     }
   }
   try{
+    paymentBody.expiryDate = Date.now() + 5000;
+    paymentBody.status = true;
     Payment.create(paymentBody);
     const customer = await stripe.customers.create({
         email: token.email,
@@ -46,7 +48,20 @@ const createPayment = async (paymentBody) => {
     };
   }
 };
-
+const setPaymentStatus = async (email) =>{
+  try{
+    const status = await Payment.updatePaymentStatus(email);
+    console.log(status);
+    const message = status.nModified == 0 ? "Already upto date" : "successfully updated";
+    return {
+      "status":message
+    }
+  }catch(err){
+    return {
+      "status":"failed to update payment status",
+    };
+  }
+}
 const getPayments = async (role)=>{
   if(role!="admin"){
     return {
@@ -59,4 +74,4 @@ const getPayments = async (role)=>{
   return payments;
 }
 
-module.exports = {createPayment, getPayments};
+module.exports = {createPayment, getPayments, setPaymentStatus};
