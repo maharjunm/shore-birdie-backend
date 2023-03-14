@@ -84,7 +84,7 @@ const paymentSchema = mongoose.Schema(
           required: true,
         },
         address_state: {
-          type: Number,
+          type: String , Number,
           required: true,
         },
         address_zip: {
@@ -138,7 +138,10 @@ paymentSchema.statics.getPayments = async function(){
   const payments = await this.find();
   return payments;
 }
-
+paymentSchema.statics.getPaymentStatus = async function(email){
+  const record = await this.findOne({'token.email':email});
+  return record;
+}
 paymentSchema.statics.updatePaymentStatus = async function(email){
   const updated = await this.updateOne(
     {

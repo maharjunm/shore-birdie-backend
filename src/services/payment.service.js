@@ -20,7 +20,7 @@ const createPayment = async (paymentBody) => {
     }
   }
   try{
-    paymentBody.expiryDate = Date.now() + 5000;
+    paymentBody.expiryDate = Date.now() + 600000000;
     paymentBody.status = true;
     Payment.create(paymentBody);
     const customer = await stripe.customers.create({
@@ -48,12 +48,33 @@ const createPayment = async (paymentBody) => {
     };
   }
 };
+
+const getPaymentStatus = async (email) =>{
+  try{
+    const payment = await Payment.getPaymentStatus(email);
+    return {
+      "message": "success",
+      "status": payment.status,
+      "expiryDate": payment.expiryDate,
+      "product": payment.product
+    }
+  }catch(err){
+    return {
+      "message": "failed to get payment status",
+      "status": false,
+      "expiryDate": null
+    };
+  }
+};
+
 const setPaymentStatus = async (email) =>{
   try{
     const status = await Payment.updatePaymentStatus(email);
     const message = status.nModified == 0 ? "Already upto date" : "successfully updated";
     return {
-      "status":message
+      "message":message,
+      "status":message,
+
     }
   }catch(err){
     return {
@@ -73,4 +94,4 @@ const getPayments = async (role)=>{
   return payments;
 }
 
-module.exports = {createPayment, getPayments, setPaymentStatus};
+module.exports = {createPayment, getPayments, setPaymentStatus, getPaymentStatus};

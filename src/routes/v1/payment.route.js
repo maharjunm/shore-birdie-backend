@@ -13,5 +13,8 @@ const router = express.Router();
   router
     .route('/update')
     .get(paymentController.setPaymentStatus);
+  router
+  .route('/get')
+  .get(paymentController.getPaymentStatus);
    
 module.exports = router;

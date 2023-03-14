@@ -14,8 +14,14 @@ const setPaymentStatus = catchAsync(async (req,res) =>{
   const status = await paymentService.setPaymentStatus(req.query.email);
   res.status(httpStatus.CREATED).send(status);
 })
+const getPaymentStatus = catchAsync(async (req,res) =>{
+  const status = await paymentService.getPaymentStatus(req.query.email);
+  res.status(httpStatus.CREATED).send(status);
+})
+
 module.exports = {
   createPayment,
   getPayments,
-  setPaymentStatus
+  setPaymentStatus,
+  getPaymentStatus
 };
