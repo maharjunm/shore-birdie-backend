@@ -12,7 +12,7 @@ const router = express.Router();
     .get(paymentController.getPayments);
   router
     .route('/update')
-    .get(paymentController.setPaymentStatus);
+    .get(paymentController.updatePaymentStatus);
   router
   .route('/get')
   .get(paymentController.getPaymentStatus);

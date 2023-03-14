@@ -5,6 +5,7 @@ const config = require('../config/config');
 const uuid = require("uuid").v4
 const stripe = require("stripe")(config.stripekey);
 const bodyparser = require('body-parser')
+const moment = require('moment');
 
 const createPayment = async (paymentBody) => {
   const { token, product } = paymentBody;
@@ -20,7 +21,7 @@ const createPayment = async (paymentBody) => {
     }
   }
   try{
-    paymentBody.expiryDate = Date.now() + 600000000;
+    paymentBody.expiryDate = moment(Date.now()).add(config.expiryDays,'days');
     paymentBody.status = true;
     Payment.create(paymentBody);
     const customer = await stripe.customers.create({
@@ -67,7 +68,7 @@ const getPaymentStatus = async (email) =>{
   }
 };
 
-const setPaymentStatus = async (email) =>{
+const updatePaymentStatus = async (email) =>{
   try{
     const status = await Payment.updatePaymentStatus(email);
     const message = status.nModified == 0 ? "Already upto date" : "successfully updated";
@@ -94,4 +95,4 @@ const getPayments = async (role)=>{
   return payments;
 }
 
-module.exports = {createPayment, getPayments, setPaymentStatus, getPaymentStatus};
+module.exports = {createPayment, getPayments, updatePaymentStatus, getPaymentStatus};

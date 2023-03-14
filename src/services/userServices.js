@@ -3,6 +3,8 @@ const userModel = require('../models/userModel');
 const jwt = require('jsonwebtoken');
 const bcryptjs = require('bcryptjs');
 const { auth } = require('../config/config');
+const moment = require('moment');
+const config = require('../config/config');
 
 //sign-up code
 
@@ -55,7 +57,7 @@ const login = async (req,res)=>{
 
     const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
     res.cookie('JWTOKEN',token,{
-      expires: new Date(Date.now() + 25892000000),
+      expires: moment(Date.now()).add(config.expiryDays,'days'),
       httpOnly: true
     });
     
