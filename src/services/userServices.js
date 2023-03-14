@@ -57,7 +57,7 @@ const login = async (req,res)=>{
 
     const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
     res.cookie('JWTOKEN',token,{
-      expires: moment(Date.now()).add(config.expiryDays,'days'),
+      expires: new Date(moment(Date.now()).add(config.expiryDays,'days')),
       httpOnly: true
     });
     
