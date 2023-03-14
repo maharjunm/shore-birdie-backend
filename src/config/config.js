@@ -16,6 +16,7 @@ const envVarsSchema = Joi.object()
     FROM_EMAIL: Joi.string().required(),
     TO_EMAIL: Joi.string().required(),
     AUTH_SECRET_KEY: Joi.string().required().description('auth secret key'),
+    EXPIRY_DAYS: Joi.number().required().description("payment expiry date")
   })
   .unknown();
 
@@ -35,6 +36,7 @@ module.exports = {
   fromemail: envVars.FROM_EMAIL,
   toemail: envVars.TO_EMAIL,
   auth: envVars.AUTH_SECRET_KEY,
+  expiryDays: envVars.EXPIRY_DAYS,
   mongoose: {
     url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     options: {
