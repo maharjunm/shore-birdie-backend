@@ -21,7 +21,7 @@ const createPayment = async (paymentBody) => {
     }
   }
   try{
-    paymentBody.expiryDate = moment(Date.now()).add(config.expiryDays,'days');
+    paymentBody.expiryDate = moment(Date.now()).add(config.paymentExpiryDays,'days');
     paymentBody.status = true;
     Payment.create(paymentBody);
     const customer = await stripe.customers.create({
