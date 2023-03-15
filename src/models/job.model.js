@@ -12,7 +12,7 @@ const jobSchema = new Schema({
   company: {
     name: { type: String, required: true },
     companyType: { type: String, required: true },
-    logo: { type: String, required: true },
+    logo: { type : String , required: true},
   },
   location: {
     city: { type: String, required: true },
@@ -47,6 +47,12 @@ const jobSchema = new Schema({
   discipline: {
     type: [String],
     required: true
+  },
+  createdby:{
+    createdby:String,
+    createdat: Date,
+    updatedby: String,
+    updatedat: Date,
   },
   status:{
     type:String,
