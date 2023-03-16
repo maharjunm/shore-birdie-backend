@@ -8,8 +8,12 @@ const createJob= async (jobBody)=>{
 const getJob=async ()=>{
   return Job.find();
 }
+const getJobById=async(Id) =>{
+  return Job.find({createdBy:Id});
+}
 
 module.exports={
   createJob,
-  getJob
+  getJob,
+  getJobById
 }
