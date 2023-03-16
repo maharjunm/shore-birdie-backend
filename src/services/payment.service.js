@@ -5,6 +5,7 @@ const config = require('../config/config');
 const uuid = require("uuid").v4
 const stripe = require("stripe")(config.stripekey);
 const bodyparser = require('body-parser')
+const moment = require('moment');
 
 const createPayment = async (paymentBody) => {
   const { token, product } = paymentBody;
@@ -20,6 +21,8 @@ const createPayment = async (paymentBody) => {
     }
   }
   try{
+    paymentBody.expiryDate = moment(Date.now()).add(config.paymentExpiryDays,'days');
+    paymentBody.status = true;
     Payment.create(paymentBody);
     const customer = await stripe.customers.create({
         email: token.email,
@@ -47,6 +50,39 @@ const createPayment = async (paymentBody) => {
   }
 };
 
+const getPaymentStatus = async (email) =>{
+  try{
+    const payment = await Payment.getPaymentStatus(email);
+    return {
+      "message": "success",
+      "status": payment.status,
+      "expiryDate": payment.expiryDate,
+      "product": payment.product
+    }
+  }catch(err){
+    return {
+      "message": "failed to get payment status",
+      "status": false,
+      "expiryDate": null
+    };
+  }
+};
+
+const updatePaymentStatus = async (email) =>{
+  try{
+    const status = await Payment.updatePaymentStatus(email);
+    const message = status.nModified == 0 ? "Already upto date" : "successfully updated";
+    return {
+      "message":message,
+      "status":message,
+
+    }
+  }catch(err){
+    return {
+      "status":"failed to update payment status",
+    };
+  }
+}
 const getPayments = async (role)=>{
   if(role!="admin"){
     return {
@@ -59,4 +95,4 @@ const getPayments = async (role)=>{
   return payments;
 }
 
-module.exports = {createPayment, getPayments};
+module.exports = {createPayment, getPayments, updatePaymentStatus, getPaymentStatus};
