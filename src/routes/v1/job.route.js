@@ -3,7 +3,9 @@ const { jobController }=require('../../controllers/index');
 
 const router=express.Router();
 
-router.route('/').post(jobController.CreateJob).get(jobController.GetJob);
+router.route('/')
+      .get(jobController.GetJob)
+      .post(jobController.CreateJob);
 
 
 module.exports = router;
