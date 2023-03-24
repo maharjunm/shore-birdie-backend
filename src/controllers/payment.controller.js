@@ -3,7 +3,7 @@ const catchAsync = require('../utils/catchAsync');
 const { paymentService } = require('../services');
 
 const createPayment = catchAsync(async (req, res) => {
-  const payment = await paymentService.createPayment(req.body);
+  const payment = await paymentService.createPayment(req.body.body);
   res.status(httpStatus.CREATED).send(payment);
 });
 const getPayments = catchAsync(async (req,res) => {
@@ -18,10 +18,9 @@ const getPaymentStatus = catchAsync(async (req,res) =>{
   const status = await paymentService.getPaymentStatus(req.query.email);
   res.status(httpStatus.CREATED).send(status);
 })
-
 module.exports = {
   createPayment,
   getPayments,
   updatePaymentStatus,
-  getPaymentStatus
+  getPaymentStatus,
 };

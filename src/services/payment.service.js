@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { Payment } = require('../models');
+const { UserPayment } = require('../models');
 const ApiError = require('../utils/ApiError');
 const config = require('../config/config');
 const uuid = require("uuid").v4
@@ -8,51 +8,41 @@ const bodyparser = require('body-parser')
 const moment = require('moment');
 
 const createPayment = async (paymentBody) => {
-  const { token, product } = paymentBody;
-
-  if (token.email && (await Payment.isProductTaken(token.email))) {
+  const { email, product } = paymentBody;
+  const isTaken = await UserPayment.isProductTaken(email);
+  if(email && isTaken ){
+    console.log("came");
     return {
       "title":"stripe payment info",
       "status":"failed",
-      "information":{
-        "email":token.email,
-        "msg":"email already taken the product",
-      }
+      "email": email,
+      "message": "email already taken the product",
     }
   }
   try{
     paymentBody.expiryDate = moment(Date.now()).add(config.paymentExpiryDays,'days');
     paymentBody.status = true;
-    Payment.create(paymentBody);
-    const customer = await stripe.customers.create({
-        email: token.email,
-        source:token.id
-    }).catch((err) => { console.error(' STRIPE ERROR: ', error); })
-
+    const status = await UserPayment.create(paymentBody);
+    const response = status?"success":"Failure";
     return {
-      "title":"stripe payment info",
-      "status":"success",
-      "information":{
-        "msg":"payment successfull",
-        "token":token,
-        "product":product
-      }
-    };
+      "status":response,
+      "email": email,
+      "product": product,
+      "message": "payment successfull",
+    }
   }catch(err){
+    console.log(err);
     return {
-      "title":"stripe payment info",
-      "status":"failed",
-      "information":{
-        "msg":"payment failed",
-        "error":err,
-      }
+      "status":"failed to save payment status",
+      "email": email,
+      "product": product,
     };
   }
 };
 
 const getPaymentStatus = async (email) =>{
   try{
-    const payment = await Payment.getPaymentStatus(email);
+    const payment = await UserPayment.getPaymentStatus(email);
     return {
       "message": "success",
       "status": payment.status,
@@ -70,7 +60,7 @@ const getPaymentStatus = async (email) =>{
 
 const updatePaymentStatus = async (email) =>{
   try{
-    const status = await Payment.updatePaymentStatus(email);
+    const status = await UserPayment.updatePaymentStatus(email);
     const message = status.nModified == 0 ? "Already upto date" : "successfully updated";
     return {
       "message":message,
@@ -91,8 +81,7 @@ const getPayments = async (role)=>{
       "mesg" :"not authorised person to view payments"
     }
   }
-  const payments = await Payment.getPayments();
+  const payments = await UserPayment.getPayments();
   return payments;
 }
-
 module.exports = {createPayment, getPayments, updatePaymentStatus, getPaymentStatus};

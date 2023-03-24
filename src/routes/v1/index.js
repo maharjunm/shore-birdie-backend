@@ -38,7 +38,7 @@ const defaultRoutes = [
   {
     path:'/admin',
     route: adminRouter,
-  }
+  },
 ];
 
 defaultRoutes.forEach((route) => {

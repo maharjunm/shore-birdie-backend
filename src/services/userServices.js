@@ -45,14 +45,14 @@ const login = async (req,res)=>{
   try{
     const exsistingUser = await userModel.findOne({email : email});
     if(!exsistingUser){
-      return res.status(404).json({message : "user not found"});
+      return res.json({status: false,message : "user not found"});
     }
 
     const matchPassword = await bcryptjs.compare(password,exsistingUser.password);
 
 
     if(!matchPassword){
-      return res.status(400).json({message : "Given Password is Wrong"});
+      return res.json({status: false,message : "Given Password is Wrong"});
     }
 
     const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
@@ -61,8 +61,10 @@ const login = async (req,res)=>{
       httpOnly: true
     });
     
-    res.status(200).json(
-      { token :token,
+    res.json(
+      { 
+        status: true,
+        token :token,
         username: exsistingUser.username,
         user: exsistingUser.email
       }
@@ -70,7 +72,7 @@ const login = async (req,res)=>{
   }
   catch(error){
     console.log(error)
-    res.status(500).json({message : "something went wrong "})
+    res.json({status:false,message : "something went wrong "})
   }
 }
 
