@@ -1,8 +1,12 @@
 const { Job }=require('../models/index');
 
-const createJob= async (jobBody)=>{
+const createJob= async (jobBody,user)=>{
   const job=new Job(jobBody);
-  await job.save()
+  job.createdAt = new Date();
+  job.updatedAt = new Date();
+  job.createdBy = user;
+  job.updatedBy = user;
+  await job.save();
   return job;
 }
 const getJob=async ()=>{

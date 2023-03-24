@@ -12,7 +12,7 @@ const jobSchema = new Schema({
   company: {
     name: { type: String, required: true },
     companyType: { type: String, required: true },
-    logo: { type: String, required: true },
+    logo: { type : String , required: true},
   },
   location: {
     city: { type: String, required: true },
@@ -48,6 +48,10 @@ const jobSchema = new Schema({
     type: [String],
     required: true
   },
+  createdBy:[{type:String}],
+  updatedBy:[{type:String}],
+  createdAt:[{type:Date}],
+  updatedAt:[{type:Date}],
   status:{
     type:String,
     enum: ['Approved','Rejected','Pending'],

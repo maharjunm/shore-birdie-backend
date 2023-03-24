@@ -60,6 +60,16 @@ const login = async (req,res)=>{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
       httpOnly: true
     });
+
+    res.cookie('user',exsistingUser.username,{
+      expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
+      httpOnly: true
+    });
+
+    res.cookie('email',exsistingUser.email,{
+      expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
+      httpOnly: true
+    });
     
     res.status(200).json(
       { token :token,

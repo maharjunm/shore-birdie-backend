@@ -12,12 +12,14 @@ const { authLimiter } = require('./middlewares/rateLimiter');
 const routes = require('./routes/v1');
 const { errorConverter, errorHandler } = require('./middlewares/error');
 const ApiError = require('./utils/ApiError');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 if (config.env !== 'test') {
   app.use(morgan.successHandler);
   app.use(morgan.errorHandler);
 }
+app.use(cookieParser());
 app.use(bodyparser.urlencoded({extended: false}))
 app.use(bodyparser.json())
 app.use(helmet());
