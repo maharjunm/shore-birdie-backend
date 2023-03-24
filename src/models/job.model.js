@@ -55,7 +55,8 @@ const jobSchema = new Schema({
   status:{
     type:String,
     enum: ['Approved','Rejected','Pending'],
-  }
+  },
+  createdBy:String
   
 });
 
