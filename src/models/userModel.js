@@ -15,10 +15,10 @@ const UserSchema = mongoose.Schema({
     unique : true,
     required : true
   },
-  token :{
-    type : String,
+  // token :{
+    // type : String,
     // required : true
-  },
+  // },
 } ,{timestamps : true});
 
 module.exports = mongoose.model("user", UserSchema);

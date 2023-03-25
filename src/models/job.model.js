@@ -56,7 +56,7 @@ const jobSchema = new Schema({
     type:String,
     enum: ['Approved','Rejected','Pending'],
   },
-  createdBy:String
+  // createdBy:String
   
 });
 
