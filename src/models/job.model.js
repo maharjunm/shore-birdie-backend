@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const validator = require('validator');
 
 
 const jobSchema = new Schema({
@@ -44,22 +45,49 @@ const jobSchema = new Schema({
     email:String,
     employeeEmail:String,
   },
+  
   discipline: {
     type: [String],
     required: true
   },
-  createdBy:[{type:String}],
-  updatedBy:[{type:String}],
-  createdAt:[{type:Date}],
-  updatedAt:[{type:Date}],
+  createdBy:{
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true,
+    validate(value) {
+      if (!validator.isEmail(value)) {
+        throw new Error('Invalid email');
+      }
+    },
+  },
+  updatedBy:{
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true,
+    validate(value) {
+      if (!validator.isEmail(value)) {
+        throw new Error('Invalid email');
+      }
+    },
+  },
+  createdAt: { type: Date },
+  updatedAt: { type: Date },
   status:{
     type:String,
     enum: ['Approved','Rejected','Pending'],
   },
-  createdBy:String
-  
 });
 
+jobSchema.statics.getJobsByStatus = async function(status){
+  const jobs = await this.find( { 'status': status } );
+  return jobs;
+}
+jobSchema.statics.getJobsByAdmin = async function(){
+  const jobs = await this.find( { 'status': {  $ne: 'Approved' } });
+  return jobs;
+}
 
 const Job = mongoose.model('job', jobSchema);
 
