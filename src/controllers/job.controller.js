@@ -2,7 +2,6 @@ const { jobService } =require('../services/index');
 
 const CreateJob= async (req,res)=>{
   const user = req.cookies.user;
-  if (loggedIn === 'true'){ console.log('pranav')}
   const job=await jobService.createJob(req.body,user);
   res.send(job);
 }
