@@ -10,14 +10,21 @@ const UserSchema = mongoose.Schema({
     type : String,
     required : true
   },
-  email :{
-    type : String,
-    unique : true,
-    required : true
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+    validate(value) {
+      if (!validator.isEmail(value)) {
+        throw new Error('Invalid email');
+      }
+    },
   },
-  token :{
+  role :{
     type : String,
-    // required : true
+    required : true
   },
 } ,{timestamps : true});
 
