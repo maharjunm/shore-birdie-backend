@@ -28,10 +28,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(xss());
 app.use(mongoSanitize());
 app.use(compression());
-app.use(cors({
-  origin: '*'
-}));
-app.options('*', cors());
+const corsOptions ={
+  origin:[config.frontendUrl,], 
+  credentials:true,            
+  optionSuccessStatus:200
+}
+app.use(cors(corsOptions));
 if (config.env === 'production') {
   app.use('/v1/auth', authLimiter);
 }

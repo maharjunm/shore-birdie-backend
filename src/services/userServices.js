@@ -24,7 +24,8 @@ const signup = async (req,res)=>{
     const result = await userModel.create({
       email :email,
       password :hashedPassword,
-      username :username
+      username :username,
+      role:'USER'
     });
 
     const token = jwt.sign({email :result.email,id : result._id},auth);
@@ -56,27 +57,21 @@ const login = async (req,res)=>{
     }
 
     const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
-    res.cookie('JWTOKEN',token,{
+    res.cookie('username',exsistingUser.username,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
-      httpOnly: true
-    });
-
-    res.cookie('user',exsistingUser.username,{
+      httpOnly: true,
+      secure: false,
+    }).cookie('jwtoken',token,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
-      httpOnly: true
-    });
-
-    res.cookie('email',exsistingUser.email,{
+      httpOnly: false,
+	    secure: false,
+    }).cookie('email',exsistingUser.email,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
-      httpOnly: true
+      httpOnly: true, 
+      secure: false,
     });
-    
-    res.status(200).json(
-      { token :token,
-        username: exsistingUser.username,
-        user: exsistingUser.email
-      }
-    );
+    const isAdmin = exsistingUser.role==='ADMIN'?true:false;
+    res.status(200).json({ token: token,isAdmin: isAdmin });
   }
   catch(error){
     console.log(error)
@@ -85,12 +80,15 @@ const login = async (req,res)=>{
 }
 
 const logout = async (req,res)=>{
-  res.clearCookie('JWTOKEN',{path:'/'})
+  const { jwtoken, email, username } = req.cookies;
+  jwtoken && res.clearCookie('username',{path:'/'});
+  email && res.clearCookie('jwtoken',{path:'/'});
+  username && res.clearCookie('email',{path:'/'});
   res.status(200).send('user Logout');
 }
 
 module.exports = {
   login, 
   signup,
-  logout
+  logout,
 }
