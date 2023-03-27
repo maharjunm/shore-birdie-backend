@@ -9,8 +9,8 @@ const authValidate = catchAsync(async (req, res, next) => {
   if(!jwtoken) throw new Error('token does not exist or expired');
   await jwt.verify(jwtoken,auth,async (err,token) => {
     if(err) throw new Error('invalid token');
-    const { id } = token;
-    const existingUser = await userModel.findOne({email : email});
+
+    const existingUser = await userModel.findOne({email : token.email});
     if(!existingUser) {
       res.clearCookie('jwtoken');
       throw new Error('user does not exist');
