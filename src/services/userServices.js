@@ -58,7 +58,6 @@ const login = async (req,res)=>{
 
     const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
     const sameSiteAttribute = config.env === 'development' ? true : "none";
-    console.log("samesite",sameSiteAttribute);
     res.cookie('username',exsistingUser.username,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
       httpOnly: true,
