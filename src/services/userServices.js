@@ -66,11 +66,11 @@ const login = async (req,res)=>{
     }).cookie('jwtoken',token,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
       httpOnly: false,
-	    sameSite: sameSiteAttribute,
+      sameSite: sameSiteAttribute,
       secure: true,
     }).cookie('email',exsistingUser.email,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
-      httpOnly: true, 
+      httpOnly: true,
       sameSite: sameSiteAttribute,
       secure: true,
     });
