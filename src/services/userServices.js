@@ -60,15 +60,18 @@ const login = async (req,res)=>{
     res.cookie('username',exsistingUser.username,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
       httpOnly: true,
-      secure: false,
+      sameSite: config.env === 'production' ? true : "none",
+      secure: config.env === 'production' ? true : false,
     }).cookie('jwtoken',token,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
       httpOnly: false,
-	    secure: false,
+	    sameSite: config.env === 'development' ? true : "none",
+      secure: config.env === 'development' ? false : true,
     }).cookie('email',exsistingUser.email,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
       httpOnly: true, 
-      secure: false,
+      sameSite: config.env === 'development' ? true : "none",
+      secure: config.env === 'development' ? false : true,
     });
     const isAdmin = exsistingUser.role==='ADMIN'?true:false;
     res.status(200).json({ token: token,isAdmin: isAdmin });

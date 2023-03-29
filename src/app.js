@@ -31,7 +31,8 @@ app.use(compression());
 const corsOptions ={
   origin:[config.frontendUrl,], 
   credentials:true,            
-  optionSuccessStatus:200
+  optionSuccessStatus:200,
+  allowedHeaders: ['Content-Type','Authorization','x-csrf-token'],
 }
 app.use(cors(corsOptions));
 if (config.env === 'production') {
