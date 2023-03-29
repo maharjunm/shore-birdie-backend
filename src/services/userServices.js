@@ -57,21 +57,23 @@ const login = async (req,res)=>{
     }
 
     const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
+    const sameSiteAttribute = config.env === 'development' ? true : "none";
+    console.log("samesite",sameSiteAttribute);
     res.cookie('username',exsistingUser.username,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
       httpOnly: true,
-      sameSite: config.env === 'production' ? true : "none",
-      secure: config.env === 'production' ? true : false,
+      sameSite: sameSiteAttribute,
+      secure: true,
     }).cookie('jwtoken',token,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
       httpOnly: false,
-	    sameSite: config.env === 'development' ? true : "none",
-      secure: config.env === 'development' ? false : true,
+	    sameSite: sameSiteAttribute,
+      secure: true,
     }).cookie('email',exsistingUser.email,{
       expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
       httpOnly: true, 
-      sameSite: config.env === 'development' ? true : "none",
-      secure: config.env === 'development' ? false : true,
+      sameSite: sameSiteAttribute,
+      secure: true,
     });
     const isAdmin = exsistingUser.role==='ADMIN'?true:false;
     res.status(200).json({ token: token,isAdmin: isAdmin });
