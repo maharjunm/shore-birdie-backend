@@ -11,11 +11,13 @@ const getPayments = catchAsync(async (req,res) => {
   res.status(httpStatus.CREATED).send(payments);
 })
 const updatePaymentStatus = catchAsync(async (req,res) =>{
-  const status = await paymentService.updatePaymentStatus(req.query.email);
+  const { email } = req.cookies;
+  const status = await paymentService.updatePaymentStatus(email);
   res.status(httpStatus.CREATED).send(status);
 })
 const getPaymentStatus = catchAsync(async (req,res) =>{
-  const status = await paymentService.getPaymentStatus(req.query.email);
+  const { email } = req.cookies;
+  const status = await paymentService.getPaymentStatus(email);
   res.status(httpStatus.CREATED).send(status);
 })
 
