@@ -25,7 +25,6 @@ const signup = async (req,res)=>{
       email :email,
       password :hashedPassword,
       username :username,
-      role:'USER'
     });
 
     const token = jwt.sign({email :result.email,id : result._id},auth);
