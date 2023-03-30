@@ -1,5 +1,6 @@
 const express=require('express');
 const { jobController }=require('../../controllers/index');
+const authValidate = require('../../middlewares/authValidate');
 
 const router=express.Router();
 
