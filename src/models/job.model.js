@@ -47,8 +47,30 @@ const jobSchema = new Schema({
     type: [String],
     required: true
   },
-  createdBy:String,
-  updatedBy:String,
+  createdBy:{
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+    validate(value) {
+      if (!validator.isEmail(value)) {
+        throw new Error('Invalid email');
+      }
+    },
+  },
+  updatedBy:{
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true,
+    validate(value) {
+      if (!validator.isEmail(value)) {
+        throw new Error('Invalid email');
+      }
+    },
+  },
   createdAt:Date,
   updatedAt:Date,
   status:{
