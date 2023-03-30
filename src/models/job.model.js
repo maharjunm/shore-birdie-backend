@@ -47,14 +47,8 @@ const jobSchema = new Schema({
     type: [String],
     required: true
   },
-  createdBy:{
-    type: String,
-    required: true,
-  },
-  updatedBy:{
-    type: String,
-    required: true,
-  },
+  createdBy:String,
+  updatedBy:String,
   createdAt:Date,
   updatedAt:Date,
   status:{
