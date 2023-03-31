@@ -50,12 +50,10 @@ const jobSchema = new Schema({
   createdBy:{
     type: String,
     required: true,
-    unique: true,
   },
   updatedBy:{
     type: String,
     required: true,
-    unique: true,
   },
   createdAt:Date,
   updatedAt:Date,

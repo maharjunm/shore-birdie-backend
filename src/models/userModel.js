@@ -21,11 +21,12 @@ const UserSchema = mongoose.Schema({
   userId:{
     type:String,
     required: true,
+    unique: true,
   },
   role :{
     type:String,
-    enum:['USER','ADMIN','SUPER_ADMIN'],
-    default:"USER",
+    enum:['read-only','read-write','admin'],
+    default:"read-only",
   },
 } ,{timestamps : true});
 

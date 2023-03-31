@@ -80,7 +80,7 @@ const login = async (req,res)=>{
       sameSite: sameSiteAttribute,
       secure: true,
     });
-    const isAdmin = exsistingUser.role==='ADMIN'?true:false;
+    const isAdmin = exsistingUser.role==='admin'?true:false;
     res.status(200).json({ token: token,isAdmin: isAdmin });
   }
   catch(error){
