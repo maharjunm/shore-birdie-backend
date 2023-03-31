@@ -1,7 +1,7 @@
 const { jobService } =require('../services/index');
 
 const CreateJob= async (req,res)=>{
-  const user = req.cookies.username;
+  const user = req.cookies.userId;
   const job=await jobService.createJob(req.body,user);
   res.send(job);
 }
