@@ -5,6 +5,7 @@ const paymentValidation = require('../../validations/payment.validation');
 const paymentController = require('../../controllers/payment.controller');
 const router = express.Router();
 const authValidate = require('../../middlewares/authValidate');
+const config = require('../../config/config');
 
   router
     .route('/')
@@ -16,5 +17,16 @@ const authValidate = require('../../middlewares/authValidate');
   router
     .route('/get')
     .get(authValidate,paymentController.getPaymentStatus);
+  router
+    .route('/page')
+    .post(authValidate,paymentController.checkout);
+  router
+    .route('/success')
+    .get(paymentController.success);
+    router
+    .route('/cancel')
+    .get((req,res)=>{
+      res.redirect(`${config.frontendUrl}/#/cancel?message=Payment Cancelled`);
+    });
    
 module.exports = router;
