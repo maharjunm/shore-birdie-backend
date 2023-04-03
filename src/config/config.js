@@ -18,7 +18,10 @@ const envVarsSchema = Joi.object()
     AUTH_SECRET_KEY: Joi.string().required().description('auth secret key'),
     PAYMENT_EXPIRY_DAYS: Joi.number().default(30).description("user payment expiry days"),
     TOKEN_EXPIRY_DAYS: Joi.number().default(2).description('user login token expiry days'),
-    FRONTEND_URL: Joi.string().required().description('frontend url')
+    FRONTEND_URL: Joi.string().required().description('frontend url'),
+    PLATINUM_PRODUCT_ID: Joi.string().required().description('platinum id of the product from stripe account'),
+    DIAMOND_PRODUCT_ID: Joi.string().required().description('diamond id of the product from stripe account'),
+    BACKEND_URL: Joi.string().required(),
   })
   .unknown();
 
@@ -41,6 +44,9 @@ module.exports = {
   paymentExpiryDays: envVars.PAYMENT_EXPIRY_DAYS,
   tokenExpiryDays: envVars.TOKEN_EXPIRY_DAYS,
   frontendUrl: envVars.FRONTEND_URL,
+  backendUrl: envVars.BACKEND_URL,
+  platinum_id: envVars.PLATINUM_PRODUCT_ID,
+  diamond_id: envVars.DIAMOND_PRODUCT_ID,
   mongoose: {
     url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
     options: {

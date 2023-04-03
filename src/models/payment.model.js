@@ -13,85 +13,35 @@ const paymentSchema = mongoose.Schema(
       type: Boolean,
       required: true,
     },
-    token: {
-      email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        lowercase: true,
-        index:true,
-        sparse:true,
-        validate(value) {
-          if (!validator.isEmail(value)) {
-            throw new Error('Invalid email');
-          }
-        },
-      },
-      created: {
-        type: Number,
-        required: true,
-      },
-      id: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      type: {
-        type: String,
-        require: true,
-      },
-      card: {
-        id: {
-          type: String,
-          require: true,
-        },
-        name: {
-          type: String,
-          require: true,
-          trim: true,
-        },
-        last4: {
-          type: Number,
-          required: true,
-        },
-        exp_month: {
-          type: Number,
-          required: true,
-        },
-        exp_year: {
-          type: Number,
-          required: true,
-        },
-        country:{
-          type: String,
-          required: true,
-        },
-        brand: {
-          type: String,
-          required: true,
-        },
-        address_city:{
-          type: String,
-          required: true,
-        },
-        address_country: {
-          type: String,
-          required: true,
-        },
-        address_line1: {
-          type: String,
-          required: true,
-        },
-        address_state: {
-          type: String , Number,
-          required: true,
-        },
-        address_zip: {
-          type: Number,
-          required: true,
+    regularPayment:{
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    name: {
+      type: String,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true,
+      index:true,
+      sparse:true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error('Invalid email');
         }
-      }
+      },
+    },
+    address:{
+      city:        { type: String },
+      country:     { type: String },
+      line1:       { type: String },
+      line2:       { type: String },
+      postal_code: { type: Number },
+      state:       { type: String },
     },
     product: {
       type: {
@@ -106,7 +56,6 @@ const paymentSchema = mongoose.Schema(
       hostingTime:{
         type: Number,
       },
-
       offers: [{
         field:{
           type: String,
@@ -119,33 +68,34 @@ const paymentSchema = mongoose.Schema(
         }
       }],
     }
-    
   },
   {
     timestamps: true,
-  }  
-    
+  }   
 );
 paymentSchema.plugin(toJSON);
 paymentSchema.plugin(paginate);
 
 paymentSchema.statics.isProductTaken = async function (email) {
-  const payment = await this.findOne({'token.email':email});
+  const payment = await this.findOne({'email':email,'status':true});
   return !!payment;
 };
-
+paymentSchema.statics.isRegularTaken = async function (email) {
+  const payment = await this.findOne({'email':email});
+  return payment && payment.regularPayment;
+};
 paymentSchema.statics.getPayments = async function(){
   const payments = await this.find();
   return payments;
 }
 paymentSchema.statics.getPaymentStatus = async function(email){
-  const record = await this.findOne({'token.email':email});
+  const record = await this.findOne({'email':email});
   return record;
 }
 paymentSchema.statics.updatePaymentStatus = async function(email){
   const updated = await this.updateOne(
     {
-      'token.email': email,
+      'email': email,
       'status': true,
       'expiryDate': { $lt: Date.now() }
     },
