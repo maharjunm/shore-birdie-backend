@@ -6,7 +6,42 @@ const uuid = require("uuid").v4
 const stripe = require("stripe")(config.stripekey);
 const bodyparser = require('body-parser')
 const moment = require('moment');
+const { regularPayment } = require('./paymentUtils/regular.payment');
+const { createSession, validateSession } = require('./paymentUtils/stripe.session');
 
+const checkout = async (paymentBody,email) => {
+  const product = JSON.parse(paymentBody.product);
+  if (email && (await Payment.isProductTaken(email))) {
+    const message = "Email Already Taken The Product";
+    return {
+      "url": `${config.frontendUrl}/#/success?message=${message}`,
+    }
+  }
+  if(product.type==='Regular'){
+    return await regularPayment(product,email);
+  }
+  return await createSession(paymentBody,email);
+};
+
+const success = async (session_id,product) => {
+  if(!session_id || !product){
+    return {
+      "url": `${config.frontendUrl}/#/cancel`,
+      "message": "Payment Failed Try Again Later",
+    }
+  }
+  const status = await  validateSession(session_id,product);
+  if(!status){
+    return {
+      "url": `${config.frontendUrl}/#/cancel`,
+      "message": "Payment Failed Try Again Later",
+    }
+  }
+  return {
+    "url": `${config.frontendUrl}/#/success`,
+    "message": "Payment Successfull",
+  }
+}
 const createPayment = async (paymentBody) => {
   const { token, product } = paymentBody;
 
@@ -95,4 +130,4 @@ const getPayments = async (role)=>{
   return payments;
 }
 
-module.exports = {createPayment, getPayments, updatePaymentStatus, getPaymentStatus};
+module.exports = {createPayment, getPayments, updatePaymentStatus, getPaymentStatus, checkout, success};
