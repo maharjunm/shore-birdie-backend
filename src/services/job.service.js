@@ -9,9 +9,9 @@ const createJob= async (jobBody,user)=>{
   await job.save();
   return job;
 }
-const getJob=async (skip)=>{
+const getJob=async (page)=>{
   const DEFAULT_LIMIT= 8;
-  const jobs= await Job.find().skip(skip).limit(DEFAULT_LIMIT);
+  const jobs= await Job.find().skip(page).limit(DEFAULT_LIMIT);
   return jobs;
 }
 const getJobByUser=async(userId) =>{
