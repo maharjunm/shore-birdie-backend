@@ -7,8 +7,8 @@ const CreateJob= async (req,res)=>{
 }
 
 const GetJob=async (req,res)=>{
-  const jsonObject=await jobService.getJob();
-  const Id = req.cookies.user;
+  const skip= req.query.skip? parseInt(req.query.skip) : 0;
+  const jsonObject=await jobService.getJob(skip);
   res.send(jsonObject);
 }
 const getJobCreatedByUser=async (req,res)=>{
