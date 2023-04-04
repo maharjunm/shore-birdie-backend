@@ -17,15 +17,16 @@ const UserSchema = mongoose.Schema({
     unique: true,
     trim: true,
     lowercase: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error('Invalid email');
-      }
-    },
+  },
+  userId:{
+    type:String,
+    required: true,
+    unique: true,
   },
   role :{
-    type : String,
-    required : true
+    type:String,
+    enum:['read-only','read-write','admin'],
+    default:"read-only",
   },
 } ,{timestamps : true});
 

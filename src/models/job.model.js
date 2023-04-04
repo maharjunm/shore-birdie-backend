@@ -35,7 +35,6 @@ const jobSchema = new Schema({
     value:String,
     id:String,
   }],
-  discipline:[String],
   duties:[{
     value:String,
     id:String,
@@ -48,16 +47,20 @@ const jobSchema = new Schema({
     type: [String],
     required: true
   },
-  createdBy:[{type:String}],
-  updatedBy:[{type:String}],
-  createdAt:[{type:Date}],
-  updatedAt:[{type:Date}],
+  createdBy:{
+    type: String,
+    required: true,
+  },
+  updatedBy:{
+    type: String,
+    required: true,
+  },
+  createdAt:Date,
+  updatedAt:Date,
   status:{
     type:String,
     enum: ['Approved','Rejected','Pending'],
   },
-  createdBy:String
-  
 });
 
 

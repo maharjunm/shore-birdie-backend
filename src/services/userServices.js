@@ -5,6 +5,7 @@ const bcryptjs = require('bcryptjs');
 const { auth } = require('../config/config');
 const moment = require('moment');
 const config = require('../config/config');
+const { v4: uuidv4 } = require('uuid');
 
 //sign-up code
 
@@ -25,7 +26,7 @@ const signup = async (req,res)=>{
       email :email,
       password :hashedPassword,
       username :username,
-      role:'USER'
+      userId : uuidv4(),
     });
 
     const token = jwt.sign({email :result.email,id : result._id},auth);
@@ -73,8 +74,13 @@ const login = async (req,res)=>{
       httpOnly: true,
       sameSite: sameSiteAttribute,
       secure: true,
+    }).cookie('userId',exsistingUser.userId,{
+      expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
+      httpOnly: false,
+      sameSite: sameSiteAttribute,
+      secure: true,
     });
-    const isAdmin = exsistingUser.role==='ADMIN'?true:false;
+    const isAdmin = exsistingUser.role==='admin'?true:false;
     res.status(200).json({ token: token,isAdmin: isAdmin });
   }
   catch(error){
@@ -84,10 +90,11 @@ const login = async (req,res)=>{
 }
 
 const logout = async (req,res)=>{
-  const { jwtoken, email, username } = req.cookies;
+  const { jwtoken, email, username, userId } = req.cookies;
   jwtoken && res.clearCookie('username',{path:'/'});
   email && res.clearCookie('jwtoken',{path:'/'});
   username && res.clearCookie('email',{path:'/'});
+  userId && res.clearCookie('userId',{path:'/'});
   res.status(200).send('user Logout');
 }
 
