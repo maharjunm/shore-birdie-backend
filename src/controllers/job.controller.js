@@ -12,7 +12,9 @@ const GetJob=async (req,res)=>{
   res.send(jsonObject);
 }
 const getJobCreatedById=async (req,res)=>{
-  const jobs= await jobService.getJobById();
+  const page=req.query.page;
+  const user=req.cookies.userId;
+  const jobs= await jobService.getJobById(user,page);
   res.send(jobs);
 }
 module.exports={
