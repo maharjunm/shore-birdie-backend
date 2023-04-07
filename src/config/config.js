@@ -56,5 +56,5 @@ module.exports = {
       useUnifiedTopology: true,
     },
   },
-  PageLimit: envVars.PAGE_DEFAULT_LIMIT,
+  PageDefaultLimit: envVars.PAGE_DEFAULT_LIMIT,
 };
