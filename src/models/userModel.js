@@ -25,7 +25,7 @@ const UserSchema = mongoose.Schema({
   },
   role :{
     type:String,
-    enum:['USER','ADMIN','SUPER_ADMIN'],
+    enum:['read-only','read-write','admin'],
     default:"USER",
   },
 } ,{timestamps : true});
