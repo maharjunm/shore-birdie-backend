@@ -50,7 +50,6 @@ const jobSchema = new Schema({
   createdBy:{
     type: String,
     required: true,
-    unique: true,
     trim: true,
     lowercase: true,
     validate(value) {
@@ -62,7 +61,6 @@ const jobSchema = new Schema({
   updatedBy:{
     type: String,
     required: true,
-    unique: true,
     trim: true,
     lowercase: true,
     validate(value) {
