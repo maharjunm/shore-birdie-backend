@@ -12,7 +12,8 @@ const createJob= async (jobBody,user)=>{
 const getJob=async ()=>{
   return Job.find();
 }
-const getJobById=async(userId) =>{
+const getJobById=async() =>{
+  const userId=req.cookies.user;
   return Job.find({createdBy:userId});
 }
 

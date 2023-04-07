@@ -1,8 +1,8 @@
 const express= require('express');
 const { Job }=require('../models/index');
 const mongoose=require('mongoose');
-const getJob= async()=>{
-  return Job.find({status:'Pending'});
+const getJob= async(page)=>{
+  return Job.find({}).limit(PageDefaultLimit).skip(page);
 }
 const updateJobStatus= async(jobId,status)=>{
   try {
