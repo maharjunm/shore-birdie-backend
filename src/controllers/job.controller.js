@@ -12,7 +12,7 @@ const GetJob=async (req,res)=>{
   res.send(jsonObject);
 }
 const getJobCreatedByUser=async (req,res)=>{
-  const userId=req.query.email;
+  const userId=req.cookies.email;
   const jobs= await jobService.getJobByUser(userId);
   res.send(jobs);
 }
