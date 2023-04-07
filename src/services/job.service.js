@@ -14,7 +14,7 @@ const getJob=async ()=>{
   return Job.find();
 }
 const getJobById=async(user,page) =>{
-  return Job.find({createdBy:user}).limit(PageDefaultLimit).skip(page);
+  return Job.find({createdBy:user}).limit(parseInt(PageDefaultLimit)).skip(page);
 }
 
 module.exports={
