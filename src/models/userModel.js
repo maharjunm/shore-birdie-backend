@@ -30,4 +30,8 @@ const UserSchema = mongoose.Schema({
   },
 } ,{timestamps : true});
 
+UserSchema.statics.isAdmin = async function (email) {
+  const admin = await this.findOne({'email':email,'role':'admin'});
+  return !!admin;
+};
 module.exports = mongoose.model("user", UserSchema);
