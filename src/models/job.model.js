@@ -22,9 +22,7 @@ const jobSchema = new Schema({
   },
   dates: {
     postingDate: { type: Date, required: true },
-    expiryDate: { type: Date, required: true },
     closingDate: { type: Date, required: true },
-    removingDate: { type: Date, required: true },
   },
   salary: {
     sal: { type: Number, required: true },
