@@ -5,6 +5,7 @@ const createJob= async (jobBody,userId,email)=>{
   const payment = await  Payment.getPaymentStatus(email);
   if((!payment || !payment.status) && !userModel.isAdmin ) throw Error('Payment not yet done');
   const job=new Job(jobBody);
+  job.dates.postingDate=new Date();
   job.createdAt = new Date();
   job.updatedAt = new Date();
   job.createdBy = userId;
