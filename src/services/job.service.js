@@ -1,4 +1,4 @@
-const { Job, Payment } = require('../models/index');
+const { Job, Payment,User } = require('../models/index');
 const userModel = require('../models/userModel');
 
 const createJob= async (jobBody,userId,email)=>{
@@ -21,9 +21,27 @@ const getJobs=async ()=>{
 const getJobById=async(userId) =>{
   return Job.find({createdBy:userId});
 }
+const getRecomendedJobs= async()=>{
+  const diamondAndPlatinumPayments = await Payment.find({
+    'status': true,
+    'product.type': {$in: ['Diamond', 'Platinum']}
+  }).distinct('email');
+  
+  const createdByUserIds = await userModel.find({
+    'email': {$in: diamondAndPlatinumPayments}
+  }).distinct('userId');
+  
+  const jobs = await Job.find({
+    'createdBy': {$in: createdByUserIds},
+    'status': 'Approved'
+  });
+  return jobs;
+  
+}
 
 module.exports={
   createJob,
   getJobs,
-  getJobById
+  getJobById,
+  getRecomendedJobs
 }

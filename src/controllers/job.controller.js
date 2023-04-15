@@ -16,8 +16,13 @@ const getJobCreatedById = catchAsync( async (req,res)=>{
   const jobs= await jobService.getJobById(userId);
   res.send(jobs);
 });
+const getRecomendedJobs = catchAsync(async (req,res)=>{
+  const jobs= await jobService.getRecomendedJobs();
+  res.send(jobs);
+});
 module.exports={
   createJob,
   getJobs,
-  getJobCreatedById
+  getJobCreatedById,
+  getRecomendedJobs
 }

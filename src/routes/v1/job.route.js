@@ -11,6 +11,9 @@ router
 router
   .route('/user')
   .get(authValidate,jobController.getJobCreatedById);
+router
+  .route('/recomended')
+  .get(jobController.getRecomendedJobs);
 
 
 module.exports = router;
