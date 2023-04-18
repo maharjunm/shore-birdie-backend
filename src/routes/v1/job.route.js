@@ -10,7 +10,7 @@ router
   .get(jobController.getJobs);
 router
   .route('/user')
-  .get(authValidate,jobController.getJobCreatedById);
+  .get(authValidate,jobController.getJobsCreatedById);
 
 
 

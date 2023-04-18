@@ -21,8 +21,7 @@ const getJobs=async (page)=>{
   const jobs= await Job.find().skip(page).limit(parseInt(PageDefaultLimit));
   return jobs;
 }
-
-const getJobsByUser=async(userId) =>{
+const getJobsById=async(userId) =>{
   return Job.find({createdBy:userId});
 }
 
