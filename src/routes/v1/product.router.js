@@ -7,6 +7,7 @@ const authValidate = require('../../middlewares/authValidate');
 router
   .route('/get')
   .get(async (req,res)=>{
-    res.send(await Product.find());
+    const products = await Product.find();
+    res.send(products);
   })
 module.exports = router;
