@@ -1,25 +1,33 @@
 const { PageDefaultLimit } = require('../config/config');
-const { Job }=require('../models/index');
+const { Job, Payment } = require('../models/index');
+const userModel = require('../models/userModel');
 
-const createJob= async (jobBody,user)=>{
+const createJob= async (jobBody,userId,email)=>{
+  const payment = await  Payment.getPaymentStatus(email);
+  if((!payment || !payment.status) && !userModel.isAdmin ) throw Error('Payment not yet done');
   const job=new Job(jobBody);
   job.createdAt = new Date();
   job.updatedAt = new Date();
-  job.createdBy = user;
-  job.updatedBy = user;
+  job.createdBy = userId;
+  job.updatedBy = userId;
   await job.save();
-  return job;
+  return {
+    "status":true,
+    "message": "Successfully posted job",
+  };
 }
-const getJob=async (page)=>{
+
+const getJobs=async (page)=>{
   const jobs= await Job.find().skip(page).limit(parseInt(PageDefaultLimit));
   return jobs;
 }
-const getJobByUser=async(userId) =>{
+
+const getJobsByUser=async(userId) =>{
   return Job.find({createdBy:userId});
 }
 
 module.exports={
   createJob,
-  getJob,
-  getJobByUser
+  getJobs,
+  getJobsById
 }

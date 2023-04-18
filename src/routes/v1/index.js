@@ -7,6 +7,7 @@ const jobRoute=require('./job.route');
 const contactRoute=require('./contact.route');
 const userRouter = require('./userRouter');
 const adminRouter =require('./admin.router');
+const productRouter =require('./product.router');
 
 const router = express.Router();
 
@@ -38,6 +39,10 @@ const defaultRoutes = [
   {
     path:'/admin',
     route: adminRouter,
+  },
+  {
+    path: '/products',
+    route: productRouter,
   }
 ];
 
