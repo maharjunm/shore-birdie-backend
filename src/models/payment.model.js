@@ -27,7 +27,6 @@ const paymentSchema = mongoose.Schema(
       required: true,
       trim: true,
       lowercase: true,
-      index:true,
       sparse:true,
       validate(value) {
         if (!validator.isEmail(value)) {
