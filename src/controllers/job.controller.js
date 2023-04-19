@@ -3,7 +3,7 @@ const  catchAsync  = require('../utils/catchAsync');
 
 const createJob = catchAsync(async (req,res)=>{
   const { userId, email} = req.cookies;
-  const status=await jobService.createJob(req.body,userId,email);
+  const status=await jobService.createJob(req.body,userId);
   res.send(status);
 });
 

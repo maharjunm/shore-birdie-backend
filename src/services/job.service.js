@@ -1,9 +1,7 @@
 const { Job, Payment } = require('../models/index');
 const userModel = require('../models/userModel');
 
-const createJob= async (jobBody,userId,email)=>{
-  const payment = await  Payment.getPaymentStatus(email);
-  if((!payment || !payment.status) && !userModel.isAdmin ) throw Error('Payment not yet done');
+const createJob= async (jobBody,userId)=>{
   const job=new Job(jobBody);
   job.createdAt = new Date();
   job.updatedAt = new Date();
