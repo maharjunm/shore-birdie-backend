@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const { Payment } = require('../models');
+const userModel = require('../models/userModel');
 const ApiError = require('../utils/ApiError');
 const config = require('../config/config');
 const uuid = require("uuid").v4
@@ -8,8 +9,23 @@ const bodyparser = require('body-parser')
 const moment = require('moment');
 const { regularPayment } = require('./paymentUtils/regular.payment');
 const { createSession, validateSession } = require('./paymentUtils/stripe.session');
+const { createJob } = require('./job.service');
 
 const checkout = async (form,product,email,userId) => {
+  if(await userModel.isAdmin(email)){
+    form.status = "Approved";
+    const res = await createJob(form,userId);
+    const successMessage = 'Job Posted Successfully';
+    const failureMessage = 'Failed to Post Jobs';
+    if(res.status){
+      return {
+        "url":`${config.frontendUrl}/#/success?message=${successMessage}`,
+      }
+    }
+    return {
+      "url":`${config.frontendUrl}/#/cancel?message=${failureMessage}`
+    }
+  }
   if(product.type==='Regular'){
     return await regularPayment(form,userId,email);
   }
