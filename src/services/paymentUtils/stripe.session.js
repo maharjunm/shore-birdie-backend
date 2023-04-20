@@ -41,8 +41,10 @@ const validateSession = async (session_id, product,form,userId )=> {
     address: address,
   }
   const paymentStatus = await  Payment.create(paymentBody);
+  form.dates.postingDate = moment(Date.now());
+  form.dates.expiryDate = moment(Date.now()).add(product.hostingTime,'days');
   const jobStatus = await createJob(form,userId);
-  return jobStatus?true:false;
+  return !!jobStatus;
 }
 
 module.exports = { createSession, validateSession };

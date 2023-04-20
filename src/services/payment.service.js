@@ -14,6 +14,8 @@ const { createJob } = require('./job.service');
 const checkout = async (form,product,email,userId) => {
   if(await userModel.isAdmin(email)){
     form.status = "Approved";
+    form.dates.postingDate = moment(Date.now());
+    form.dates.expiryDate = moment(Date.now()).add(product.hostingTime,'days');
     const res = await createJob(form,userId);
     const successMessage = 'Job Posted Successfully';
     const failureMessage = 'Failed to Post Jobs';
@@ -27,7 +29,7 @@ const checkout = async (form,product,email,userId) => {
     }
   }
   if(product.type==='Regular'){
-    return await regularPayment(form,userId,email);
+    return await regularPayment(form,product,userId);
   }
   return await createSession(form,product,email);
 };
