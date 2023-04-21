@@ -5,29 +5,28 @@ const { toJSON, paginate } = require('./plugins');
 
 const paymentSchema = mongoose.Schema(
   {
-    expiryDate:{
-      type: Date,
-      required: true,
-    },
-    status: {
-      type: Boolean,
-      required: true,
-    },
-    regularPayment:{
-      type: Boolean,
-      required: true,
-      default: false,
-    },
-    name: {
+    paymentId: {
       type: String,
+      required: true,
+      unique: true,
+    },
+    payment_intent: {
+      type: String,
+      required: true,
+    },
+    type:{
+      type: String,
+      required: true,
+    },
+    productId: {
+      type:String,
+      required: true,
     },
     email: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
       lowercase: true,
-      index:true,
       sparse:true,
       validate(value) {
         if (!validator.isEmail(value)) {
@@ -43,31 +42,6 @@ const paymentSchema = mongoose.Schema(
       postal_code: { type: Number },
       state:       { type: String },
     },
-    product: {
-      type: {
-        type: String,
-        required: true,
-        trim: true,
-      },
-      amount: {
-        type: Number,
-        required: true,
-      },
-      hostingTime:{
-        type: Number,
-      },
-      offers: [{
-        field:{
-          type: String,
-          required: true,
-          trim : true,
-        },
-        value: {
-          type: Boolean,
-          required: true,
-        }
-      }],
-    }
   },
   {
     timestamps: true,

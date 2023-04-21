@@ -23,10 +23,10 @@ const config = require('../../config/config');
   router
     .route('/success')
     .get(paymentController.success);
-    router
+  router
     .route('/cancel')
     .get((req,res)=>{
-      res.redirect(`${config.frontendUrl}/#/cancel?message=Payment Cancelled`);
+      res.redirect(`${config.frontendUrl}/#/cancel?message=Job Posting Cancelled`);
     });
    
 module.exports = router;

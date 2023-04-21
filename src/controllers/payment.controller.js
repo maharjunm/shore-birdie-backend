@@ -20,14 +20,17 @@ const getPaymentStatus = catchAsync(async (req,res) =>{
   res.status(httpStatus.CREATED).send(status);
 })
 const checkout = catchAsync(async  (req,res) =>{
-  const { email }  = req.cookies;
-  const { url }  = await paymentService.checkout(req.body,email);
-  res.redirect(url);
+  const { email, userId }  = req.cookies;
+  const { form, product } = req.body;
+  const { url }  = await paymentService.checkout(form,product.product,email,userId);
+  res.json({url:url});
 })
 const success = catchAsync(async (req,res) => {
-  const { session_id, paymentBody  } = req.query;
-  const product = paymentBody && JSON.parse(paymentBody);
-  const { url, message } = await paymentService.success(session_id,product);
+  const { userId } = req.cookies; 
+  const { session_id, formBody, productBody } = req.query;
+  const product = productBody && JSON.parse(productBody);
+  const form = formBody && JSON.parse(formBody);
+  const { url, message } = await paymentService.success(session_id,product,form,userId);
   res.redirect(`${url}?message=${message}`);
 })
 module.exports = {

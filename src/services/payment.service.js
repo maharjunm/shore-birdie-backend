@@ -1,5 +1,6 @@
 const httpStatus = require('http-status');
 const { Payment } = require('../models');
+const userModel = require('../models/userModel');
 const ApiError = require('../utils/ApiError');
 const config = require('../config/config');
 const uuid = require("uuid").v4
@@ -8,38 +9,48 @@ const bodyparser = require('body-parser')
 const moment = require('moment');
 const { regularPayment } = require('./paymentUtils/regular.payment');
 const { createSession, validateSession } = require('./paymentUtils/stripe.session');
+const { createJob } = require('./job.service');
 
-const checkout = async (paymentBody,email) => {
-  const product = JSON.parse(paymentBody.product);
-  if (email && (await Payment.isProductTaken(email))) {
-    const message = "Email Already Taken The Product";
+const checkout = async (form,product,email,userId) => {
+  if(await userModel.isAdmin(email)){
+    form.status = "Approved";
+    form.dates.postingDate = moment(Date.now());
+    form.dates.expiryDate = moment(Date.now()).add(product.hostingTime,'days');
+    const res = await createJob(form,userId);
+    const successMessage = 'Job Posted Successfully';
+    const failureMessage = 'Failed to Post Jobs';
+    if(res.status){
+      return {
+        "url":`${config.frontendUrl}/#/success?message=${successMessage}`,
+      }
+    }
     return {
-      "url": `${config.frontendUrl}/#/success?message=${message}`,
+      "url":`${config.frontendUrl}/#/cancel?message=${failureMessage}`
     }
   }
   if(product.type==='Regular'){
-    return await regularPayment(product,email);
+    return await regularPayment(form,product,userId);
   }
-  return await createSession(paymentBody,email);
+  return await createSession(form,product,email);
 };
 
-const success = async (session_id,product) => {
-  if(!session_id || !product){
+const success = async (session_id,product,form,userId) => {
+  if(!session_id || !product || !form){
     return {
       "url": `${config.frontendUrl}/#/cancel`,
-      "message": "Payment Failed Try Again Later",
+      "message": "Failed to Post Job Try Again Later",
     }
   }
-  const status = await  validateSession(session_id,product);
+  const status = await  validateSession(session_id,product,form,userId);
   if(!status){
     return {
       "url": `${config.frontendUrl}/#/cancel`,
-      "message": "Payment Failed Try Again Later",
+      "message": "Failed to Post Job Try Again Later",
     }
   }
   return {
     "url": `${config.frontendUrl}/#/success`,
-    "message": "Payment Successfull",
+    "message": "Job Posted Successfully",
   }
 }
 const createPayment = async (paymentBody) => {
