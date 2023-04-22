@@ -1,6 +1,5 @@
 const { PageDefaultLimit } = require('../config/config');
-const { Job, Payment } = require('../models/index');
-const userModel = require('../models/userModel');
+const { Job } = require('../models/index');
 
 const createJob= async (jobBody,userId)=>{
   const job=new Job(jobBody);
