@@ -2,11 +2,11 @@ const { PageDefaultLimit } = require('../config/config');
 const { Job } = require('../models/index');
 
 const createJob= async (jobBody,userId)=>{
+  jobBody.createdBy = userId;
+  jobBody.updatedBy = userId;
   const job=new Job(jobBody);
   job.createdAt = new Date();
   job.updatedAt = new Date();
-  job.createdBy = userId;
-  job.updatedBy = userId;
   await job.save();
   return {
     "status":true,
