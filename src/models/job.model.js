@@ -40,7 +40,7 @@ const jobSchema = new Schema({
   }],
   contact:{
     email:String,
-    employeeEmail:String,
+    employeeWebsite:String,
   },
   discipline: {
     type: [String],
