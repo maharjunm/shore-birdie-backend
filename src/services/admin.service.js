@@ -2,7 +2,7 @@ const express= require('express');
 const { Job }=require('../models/index');
 const mongoose=require('mongoose');
 const { PageDefaultLimit } = require('../config/config');
-const getJob= async(page)=>{
+const getJobs= async(page)=>{
   return Job.find({}).limit(parseInt(PageDefaultLimit)).skip(page);
 }
 const updateJobStatus= async(jobId,status)=>{
@@ -14,12 +14,11 @@ const updateJobStatus= async(jobId,status)=>{
     const updatedJob = await job.save();
     return updatedJob;
   } catch (err) {
-    console.error(err);
     throw new Error('Error updating job status');
   }
 }
 
 module.exports={
-  getJob,
+  getJobs,
   updateJobStatus
 }
