@@ -6,7 +6,6 @@ const router=express.Router();
 
 router
   .route('/')
-  .post(authValidate,jobController.createJob)
   .get(jobController.getJobs);
 router
   .route('/user')

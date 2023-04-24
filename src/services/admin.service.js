@@ -1,7 +1,7 @@
 const express= require('express');
 const { Job }=require('../models/index');
 const mongoose=require('mongoose');
-const getJob= async()=>{
+const getJobs= async()=>{
   return Job.find({status:'Pending'});
 }
 const updateJobStatus= async(jobId,status)=>{
@@ -13,12 +13,11 @@ const updateJobStatus= async(jobId,status)=>{
     const updatedJob = await job.save();
     return updatedJob;
   } catch (err) {
-    console.error(err);
     throw new Error('Error updating job status');
   }
 }
 
 module.exports={
-  getJob,
+  getJobs,
   updateJobStatus
 }
