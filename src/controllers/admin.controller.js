@@ -3,7 +3,8 @@ const mongoose=require('mongoose');
 const { adminServices }=require('../services/index');
 
 const getJobs=async (req,res)=>{
-  const jobs= await adminServices.getJobs(req.body);
+  const page= req.query.page ? parseInt(req.query.page) : 0;
+  const jobs= await adminServices.getJobs(page);
   res.send(jobs);
 }
 const updateStatus=async (req,res)=>{

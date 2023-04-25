@@ -6,9 +6,10 @@ const getJobs = catchAsync(async (req,res)=>{
   const jsonObject=await jobService.getJobs(page);
   res.send(jsonObject);
 });
-const getJobsCreatedById = catchAsync( async (req,res)=>{
-  const userId=req.cookies.userId;
-  const jobs= await jobService.getJobsById(userId);
+const getJobsCreatedById=(async (req,res)=>{
+  const page=req.query.page;
+  const user=req.cookies.userId;
+  const jobs= await jobService.getJobsById(user,page);
   res.send(jobs);
 });
 module.exports={

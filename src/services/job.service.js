@@ -1,5 +1,5 @@
 const { PageDefaultLimit } = require('../config/config');
-const { Job } = require('../models/index');
+const { Job }=require('../models/index');
 
 const createJob= async (jobBody,userId)=>{
   jobBody.createdBy = userId;
@@ -18,8 +18,8 @@ const getJobs=async (page)=>{
   const jobs= await Job.find().skip(page).limit(parseInt(PageDefaultLimit));
   return jobs;
 }
-const getJobsById=async(userId) =>{
-  return Job.find({createdBy:userId});
+const getJobsById=async(user,page) =>{
+  return Job.find({createdBy:user}).limit(parseInt(PageDefaultLimit)).skip(page);
 }
 
 module.exports={
