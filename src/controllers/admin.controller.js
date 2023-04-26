@@ -1,6 +1,6 @@
-const express =require('express');
-const mongoose=require('mongoose');
+const httpStatus = require('http-status');
 const { adminServices }=require('../services/index');
+const catchAsync = require('../utils/catchAsync');
 
 const getJobs=async (req,res)=>{
   const jobs= await adminServices.getJobs(req.body);
@@ -17,9 +17,23 @@ const updateStatus=async (req,res)=>{
     res.status(500).send('Server error');
   }
 }
+const approveJob = catchAsync(async (req,res)=>{
+  const jobId =req.params.id;
+  const { email } =req.cookies;
+  const status = await adminServices.setJobStatus(jobId,'Approved',email);
+  res.status(httpStatus.CREATED).send(status);
+})
+const rejectJob  = catchAsync( async (req,res)=> {
+  const jobId =req.params.id;
+  const { email } =req.cookies;
+  const status = await adminServices.setJobStatus(jobId,'Rejected',email);
+  res.status(httpStatus.CREATED).send(status);
+})
 
 
 module.exports={
   getJobs,
-  updateStatus
+  updateStatus,
+  approveJob,
+  rejectJob,
 }
