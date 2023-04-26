@@ -7,7 +7,7 @@ const getJobs = catchAsync(async (req,res)=>{
   res.send(jsonObject);
 });
 const getJobsCreatedById=(async (req,res)=>{
-  const page=req.query.page;
+  const page=parseInt(req.query.page);
   const user=req.cookies.userId;
   const jobs= await jobService.getJobsById(user,page);
   res.send(jobs);
