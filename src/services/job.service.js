@@ -21,9 +21,13 @@ const getJobs=async (page)=>{
 const getJobsById=async(user,page) =>{
   return Job.find({createdBy:user}).limit(parseInt(PageDefaultLimit)).skip(page);
 }
+const getRecomendedJobs=async() =>{
+  return Job.find({ $or :[{productType: 'Diamond'},{productType: 'Platinum'}]});
+}
 
 module.exports={
   createJob,
   getJobs,
-  getJobsById
+  getJobsById,
+  getRecomendedJobs
 }

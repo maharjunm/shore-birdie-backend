@@ -11,6 +11,7 @@ const checkout = async (form,product,email,userId) => {
     form.status = "Approved";
     form.dates.postingDate = moment(Date.now());
     form.dates.expiryDate = moment(Date.now()).add(product.hostingTime,'days');
+    form.productType=product.type;
     const res = await createJob(form,userId);
     const successMessage = 'Job Posted Successfully';
     const failureMessage = 'Failed to Post Jobs';

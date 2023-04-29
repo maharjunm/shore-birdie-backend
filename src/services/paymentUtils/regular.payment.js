@@ -6,6 +6,7 @@ const { createJob } = require('../job.service');
 const regularPayment = async (form,product,userId) => {
   form.dates.postingDate = moment(Date.now());
   form.dates.expiryDate = moment(Date.now()).add(product.hostingTime,'days');
+  form.productType=product.type;
   const res  = await  createJob(form,userId);
   const successMessage = 'Job Posted Successfully';
   const failureMessage = 'Failed to Post Job';

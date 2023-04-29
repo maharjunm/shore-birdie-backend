@@ -43,6 +43,7 @@ const validateSession = async (session_id, product,form,userId )=> {
   const paymentStatus = await  Payment.create(paymentBody);
   form.dates.postingDate = moment(Date.now());
   form.dates.expiryDate = moment(Date.now()).add(product.hostingTime,'days');
+  form.productType=product.type;
   const jobStatus = await createJob(form,userId);
   return !!jobStatus;
 }
