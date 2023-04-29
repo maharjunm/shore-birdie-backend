@@ -5,6 +5,7 @@ const moment = require('moment');
 const { regularPayment } = require('./paymentUtils/regular.payment');
 const { createSession, validateSession } = require('./paymentUtils/stripe.session');
 const { createJob } = require('./job.service');
+const { sendMail } = require('./email.service');
 
 const checkout = async (form,product,email,userId) => {
   if(await userModel.isAdmin(email)){
@@ -15,6 +16,10 @@ const checkout = async (form,product,email,userId) => {
     const successMessage = 'Job Posted Successfully';
     const failureMessage = 'Failed to Post Jobs';
     if(res.status){
+      const { fromemail } = config;
+      const data ='Job posted successfully under '+product.type+' category by admin you can check in '+ config.frontendUrl + '\n\n\n'+'Thank you for using '+config.frontendUrl ;
+      const subject = 'Request of Job Posting';
+      const mailStatus = await sendMail(fromemail,email,data,subject);
       return {
         "url":`${config.frontendUrl}/#/success?message=${successMessage}`,
       }
@@ -24,12 +29,12 @@ const checkout = async (form,product,email,userId) => {
     }
   }
   if(product.type==='Regular'){
-    return await regularPayment(form,product,userId);
+    return await regularPayment(form,product,userId,email);
   }
   return await createSession(form,product,email);
 };
 
-const success = async (session_id,product,form,userId) => {
+const success = async (session_id,product,form,userId,email) => {
   if(!session_id || !product || !form){
     return {
       "url": `${config.frontendUrl}/#/cancel`,
@@ -43,6 +48,14 @@ const success = async (session_id,product,form,userId) => {
       "message": "Failed to Post Job Try Again Later",
     }
   }
+
+  const { fromemail } = config;
+  const data ='Request for posting Job '+form.job.title+' under '+product.type+' category by '+email+
+  ' is succesfull \n\n'+' You will receive confirmation mail regarding the status of job shortly'+
+  ' you can check status of job in your dashboard  '+`${config.frontendUrl}/#/userdashboard`
+  const subject = 'Request of Posting a Job '+form.job.title;
+  const mailStatus = await sendMail(fromemail,email,data,subject);
+  
   return {
     "url": `${config.frontendUrl}/#/success`,
     "message": "Job Posted Successfully",

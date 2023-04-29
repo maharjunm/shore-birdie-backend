@@ -14,11 +14,11 @@ const checkout = catchAsync(async  (req,res) =>{
   res.json({url:url});
 })
 const success = catchAsync(async (req,res) => {
-  const { userId } = req.cookies; 
+  const { userId, email } = req.cookies; 
   const { session_id, formBody, productBody } = req.query;
   const product = productBody && JSON.parse(productBody);
   const form = formBody && JSON.parse(formBody);
-  const { url, message } = await paymentService.success(session_id,product,form,userId);
+  const { url, message } = await paymentService.success(session_id,product,form,userId,email);
   res.redirect(`${url}?message=${message}`);
 })
 module.exports = {
