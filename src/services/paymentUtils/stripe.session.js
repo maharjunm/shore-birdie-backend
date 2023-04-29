@@ -3,6 +3,7 @@ const config = require('../../config/config');
 const stripe = require("stripe")(config.stripekey);
 const moment = require('moment');
 const { createJob } = require('../job.service');
+const { sendMail } = require('../email.service');
 
 
 const createSession = async (form,product, email) => {
@@ -41,6 +42,12 @@ const validateSession = async (session_id, product,form,userId )=> {
     address: address,
   }
   const paymentStatus = await  Payment.create(paymentBody);
+  const { fromemail } = config;
+  const data ='Dear '+name+',\n\nPayment of '+product.type+' completed successfully'+
+  'Your payment reference no is '+paymentStatus.paymentId +
+  ' for any queries contact us in '+ `${config.frontendUrl}/#/`
+  const subject = 'Request of Job Posting';
+  const mailStatus = await sendMail(fromemail,email,data,subject);
   form.dates.postingDate = moment(Date.now());
   form.dates.expiryDate = moment(Date.now()).add(product.hostingTime,'days');
   const jobStatus = await createJob(form,userId);
