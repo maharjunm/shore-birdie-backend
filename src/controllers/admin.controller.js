@@ -3,7 +3,7 @@ const { adminServices }=require('../services/index');
 const catchAsync = require('../utils/catchAsync');
 
 const getJobs=async (req,res)=>{
-  const jobs= await adminServices.getJobs(req.body);
+  const jobs= await adminServices.getJobs();
   res.send(jobs);
 }
 const updateStatus=async (req,res)=>{
@@ -19,6 +19,7 @@ const updateStatus=async (req,res)=>{
 }
 const approveJob = catchAsync(async (req,res)=>{
   const jobId =req.params.id;
+  console.log(jobId);
   const { email } =req.cookies;
   const status = await adminServices.setJobStatus(jobId,'Approved',email);
   res.status(httpStatus.CREATED).send(status);

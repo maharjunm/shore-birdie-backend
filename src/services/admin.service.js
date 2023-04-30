@@ -3,7 +3,7 @@ const { Job }=require('../models/index');
 const userModel = require('../models/userModel');
 const mongoose=require('mongoose');
 const getJobs= async()=>{
-  return Job.find({status:'Pending'});
+  return Job.find({status:{$ne:'Approved'}});
 }
 const updateJobStatus= async(jobId,status)=>{
   try {
@@ -26,6 +26,7 @@ const setJobStatus = async (jobId,status,email)=>{
   if (!job) throw new Error('Job not found');
   job.status = status;
   const updatedJob = await job.save();
+  console.log(updatedJob);
   return updatedJob;
 }
 module.exports={

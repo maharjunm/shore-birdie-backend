@@ -1,11 +1,10 @@
 const express = require('express');
 const { adminController }=require('../../controllers/');
-const { Job } = require('../../models/index');
+const { Job } = require('../../models/index')
 const authValidate = require('../../middlewares/authValidate');
 const router= express.Router();
 
-router.route('/').get(adminController.getJobs);
-router.route('/:id').put(adminController.updateStatus);
+router.route('/').get(authValidate, adminController.getJobs);
 router
   .route('/approve')
   .post( authValidate, adminController.approveJob);
