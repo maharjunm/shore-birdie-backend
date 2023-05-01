@@ -1,17 +1,17 @@
 const express = require('express');
 const { adminController }=require('../../controllers/');
-const { Job } = require('../../models/index')
+const { Job } = require('../../models/index');
 const authValidate = require('../../middlewares/authValidate');
 const router= express.Router();
 
 router.route('/').get(authValidate, adminController.getJobs);
 router
-  .route('/approve')
+  .route('/approve/:id')
   .post( authValidate, adminController.approveJob);
 router
+  .route('/reject/:id')
+  .put(authValidate, adminController.rejectJob);
+router
   .route('/reject')
-  .post( authValidate, adminController.rejectJob)
-  .get(async (req,res)=> {
-    res.send(await Job.find({'status':'Rejected'}));
-  })
+  .get(authValidate, adminController.getRejectedJobs);
 module.exports= router;

@@ -1,9 +1,11 @@
 const express= require('express');
 const { Job }=require('../models/index');
 const userModel = require('../models/userModel');
+const { PageDefaultLimit } = require('../config/config');
 const mongoose=require('mongoose');
-const getJobs= async()=>{
-  return Job.find({status:{$ne:'Approved'}});
+
+const getJobs= async(page,status)=>{
+  return Job.find({status:status}).skip(page).limit(parseInt(PageDefaultLimit));
 }
 const updateJobStatus= async(jobId,status)=>{
   try {
