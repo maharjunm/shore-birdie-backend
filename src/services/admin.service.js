@@ -14,6 +14,15 @@ const updateJobStatus= async(jobId,status)=>{
     if (!job) throw new Error('Job not found');
     job.status = status;
     const updatedJob = await job.save();
+    
+    const { fromemail } = config;
+    const data ='Your request of job '+updatedJob.job.title+
+    ' has been '+status+' by ADMIN '+
+    ' you can check your posted job status in  dashboard  '+`${config.frontendUrl}`
+    const subject = 'Request of Posting a Job '+updatedJob.job.title;
+    const user = await userModel.findOne({userId:job.createdBy});
+    const mailStatus = await sendMail(fromemail,user.email,data,subject);
+
     return updatedJob;
   } catch (err) {
     throw new Error('Error updating job status');

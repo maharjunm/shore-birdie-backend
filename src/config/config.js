@@ -22,7 +22,7 @@ const envVarsSchema = Joi.object()
     PLATINUM_PRODUCT_ID: Joi.string().required().description('platinum id of the product from stripe account'),
     DIAMOND_PRODUCT_ID: Joi.string().required().description('diamond id of the product from stripe account'),
     BACKEND_URL: Joi.string().required(),
-    PAGE_DEFAULT_LIMIT: Joi.string().default(10)
+    PAGE_DEFAULT_LIMIT: Joi.string().default(10),
   })
   .unknown();
 
