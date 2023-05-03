@@ -60,6 +60,10 @@ const jobSchema = new Schema({
     type:String,
     enum: ['Approved','Rejected','Pending'],
   },
+  productType:{
+    type:String,
+    enum:['Regular' ,'Platinum', 'Diamond']
+  }
 });
 
 

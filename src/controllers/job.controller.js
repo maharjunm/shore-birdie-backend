@@ -12,7 +12,13 @@ const getJobsCreatedById=(async (req,res)=>{
   const jobs= await jobService.getJobsById(user,page);
   res.send(jobs);
 });
+
+const getRecomendedJobs=(async (req,res)=>{
+  const jobs=await jobService.getRecomendedJobs();
+  res.send(jobs);
+})
 module.exports={
   getJobs,
-  getJobsCreatedById
+  getJobsCreatedById,
+  getRecomendedJobs
 }

@@ -50,6 +50,7 @@ const validateSession = async (session_id, product,form,userId )=> {
   const mailStatus = await sendMail(fromemail,email,data,subject);
   form.dates.postingDate = moment(Date.now());
   form.dates.expiryDate = moment(Date.now()).add(product.hostingTime,'days');
+  form.productType=product.type;
   const jobStatus = await createJob(form,userId);
   return !!jobStatus;
 }

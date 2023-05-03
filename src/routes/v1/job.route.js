@@ -10,6 +10,9 @@ router
 router
   .route('/user')
   .get(authValidate,jobController.getJobsCreatedById);
+router
+  .route('/recomended')
+  .get(jobController.getRecomendedJobs);
 
 
 
