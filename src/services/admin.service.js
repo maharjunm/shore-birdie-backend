@@ -1,13 +1,11 @@
 const express= require('express');
 const { Job }=require('../models/index');
-const config = require('../config/config');
 const userModel = require('../models/userModel');
-const { sendMail } = require('./email.service');
-const mongoose=require('mongoose');
 const { PageDefaultLimit } = require('../config/config');
+const mongoose=require('mongoose');
 
-const getJobs= async(page)=>{
-  return Job.find({}).limit(parseInt(PageDefaultLimit)).skip(page);
+const getJobs= async(page,status)=>{
+  return Job.find({status:status}).skip(page).limit(parseInt(PageDefaultLimit));
 }
 const updateJobStatus= async(jobId,status)=>{
   try {
@@ -30,8 +28,20 @@ const updateJobStatus= async(jobId,status)=>{
     throw new Error('Error updating job status');
   }
 }
-
+const setJobStatus = async (jobId,status,email)=>{
+  if(!(await userModel.isAdmin(email))){
+    throw new Error('unauthorised access');
+  }
+  const jobObjectId = mongoose.Types.ObjectId(jobId);
+  const job = await Job.findOne({_id:jobObjectId});
+  if (!job) throw new Error('Job not found');
+  job.status = status;
+  const updatedJob = await job.save();
+  console.log(updatedJob);
+  return updatedJob;
+}
 module.exports={
   getJobs,
-  updateJobStatus
+  updateJobStatus,
+  setJobStatus
 }
