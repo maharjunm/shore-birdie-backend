@@ -15,14 +15,21 @@ const createJob= async (jobBody,userId)=>{
 }
 
 const getJobs=async (page)=>{
-  const jobs= await Job.find().skip(page).limit(parseInt(PageDefaultLimit));
+  const jobs= await Job.find({'status':'Approved'}).skip(page).limit(parseInt(PageDefaultLimit));
   return jobs;
 }
 const getJobsById=async(user,page) =>{
   return Job.find({createdBy:user}).limit(parseInt(PageDefaultLimit)).skip(page);
 }
 const getRecomendedJobs=async() =>{
-  return Job.find({ $or :[{productType: 'Diamond'},{productType: 'Platinum'}]});
+  return Job.find({
+    $and:[
+    { status:'Approved'},
+    { $or :[
+      { productType: 'Diamond'},
+      {productType: 'Platinum'}
+    ]}
+   ]});
 }
 
 module.exports={
