@@ -13,6 +13,9 @@ router
 router
   .route('/recomended')
   .get(jobController.getRecomendedJobs);
+router
+  .route('/get/:id')
+  .get(jobController.getJobByJobId);
 
 
 

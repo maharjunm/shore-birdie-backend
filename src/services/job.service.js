@@ -1,5 +1,6 @@
 const { PageDefaultLimit } = require('../config/config');
 const { Job }=require('../models/index');
+const mongoose=require('mongoose');
 
 const createJob= async (jobBody,userId)=>{
   jobBody.createdBy = userId;
@@ -31,10 +32,22 @@ const getRecomendedJobs=async() =>{
     ]}
    ]});
 }
+const getJobByJobId=async(jobId) =>{
+  try{
+    const jobObjectId = mongoose.Types.ObjectId(jobId);
+    if(!jobObjectId) throw new Error('Job Not Found');
+    const job = await Job.findOne({_id:jobObjectId});
+    return job;
+  } catch( error){
+    throw new Error('Job Not Found');
+  }
+}
+
 
 module.exports={
   createJob,
   getJobs,
   getJobsById,
-  getRecomendedJobs
+  getRecomendedJobs,
+  getJobByJobId
 }
