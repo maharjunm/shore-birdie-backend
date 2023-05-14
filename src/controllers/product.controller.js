@@ -10,7 +10,8 @@ const getProducts = catchAsync(async (req,res)=>{
 const updateProduct = catchAsync(async (req,res)=>{
   const { product } = req.body;
   const { productType } = product;
-  const status = await  productService.updateProduct(productType,product);
+  const { email } = req.cookies;
+  const status = await  productService.updateProduct(productType,product,email);
   res.send(status);
 })
 module.exports = {
