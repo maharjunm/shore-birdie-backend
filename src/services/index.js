@@ -5,3 +5,4 @@ module.exports.contactService=require('./contact.service');
 module.exports.userServices=require('./userServices');
 module.exports.adminServices=require('./admin.service');
 module.exports.emailServices=require('./email.service');
+module.exports.productService=require('./product.service');
