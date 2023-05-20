@@ -22,9 +22,22 @@ const getJobByJobId = catchAsync(async (req,res)=>{
   const job=await jobService.getJobByJobId(jobId);
   res.send(job);
 })
+
+const search = catchAsync(async (req,res)=>{
+  const page = parseInt(req.query.page) || 0;
+  const jobTitle = req.query.title || "";
+  let country = req.query.country || "All";
+  let discipline = req.query.discipline || "All";
+  let sector = req.query.sector || "All";
+  const salary = parseInt(req.query.salary) || 0;
+  const sort = 'dates.postingDate';
+  const jobs = jobService.search();
+  res.send(jobs);
+})
 module.exports={
   getJobs,
   getJobsCreatedById,
   getRecomendedJobs,
-  getJobByJobId
+  getJobByJobId,
+  search
 }

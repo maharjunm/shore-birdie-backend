@@ -16,6 +16,9 @@ router
 router
   .route('/get/:id')
   .get(jobController.getJobByJobId);
+router
+  .route('/search')
+  .get(jobController.search);
 
 
 

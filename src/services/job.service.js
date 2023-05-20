@@ -43,11 +43,17 @@ const getJobByJobId=async(jobId) =>{
   }
 }
 
+const search = async () => {
+  const jobs = await Job.find();
+  return jobs;
+}
+
 
 module.exports={
   createJob,
   getJobs,
   getJobsById,
   getRecomendedJobs,
-  getJobByJobId
+  getJobByJobId,
+  search,
 }
