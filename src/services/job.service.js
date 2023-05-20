@@ -42,9 +42,50 @@ const getJobByJobId=async(jobId) =>{
     throw new Error('Job Not Found');
   }
 }
+const getDiciplines = ()=>{
+  const dis = ['Life Sciences', 'Physics', 'Biomedicine','Health Sciences','Engineering','Chemistry','Computer Science','Applied Science','Nanotechnology','Earth Sciences','Environmental','Sciences','Veterinary','Fisheries','Agriculture','Forestry'];
+  return dis;
+}
+const getSectors = () => {
+  const sectors = ['Academia','Industry','Government','Healthcare/Hospital','Non-Profit','Media/Communications'];
+  return sectors;
+}
+const getRegions = () => {
+  const regions = ['North America','Europe','Asia','South America','Asia Pacific','Australia','Middle East','Oceania','Working from home'];
+  return regions;
+}
+const search = async (search) => {
+  const dis = search.discipline.length==0? getDiciplines():search.discipline;
+  const sectors = search.sector.length==0? getSectors() :search.sector;
+  const regions = search.country.length==0? getRegions():search.country ;
+  const atleastSalary = search.salary?search.salary:0; 
 
-const search = async () => {
-  const jobs = await Job.find();
+  const jobs = await Job.aggregate([
+    {
+      "$match":{
+        discipline:{
+          $in : [...dis]
+        },
+        "company.companyType":{
+          $in: [...sectors]
+        },
+        "location.region":{
+          $in: [...regions]
+        },
+        $and:[
+          {"job.title":{
+            $regex :search.jobTitle?search.jobTitle:"" , $options:"i"
+          }},
+          {"location.city":{
+            $regex :search.location?search.location:"" , $options:"i"
+          }},
+          {"salary.sal":{
+            $gt: atleastSalary
+          }},
+        ],
+      }
+    },
+  ]).sort({'dates.postingDate':-1});
   return jobs;
 }
 
