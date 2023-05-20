@@ -26,13 +26,6 @@ const getJobByJobId = catchAsync(async (req,res)=>{
 const search = catchAsync(async (req,res)=>{
   let { search } = req.query;
   search = JSON.parse(search);
-  console.log(search);
-  const page = parseInt(req.query.page) || 0;
-  let country = req.query.country || "All";
-  let discipline = req.query.discipline || "All";
-  let sector = req.query.sector || "All";
-  const salary = parseInt(req.query.salary) || 0;
-  const sort = 'dates.postingDate';
   const jobs = await jobService.search(search);
   res.send(jobs);
 })
