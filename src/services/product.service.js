@@ -2,6 +2,10 @@ const config = require('../config/config');
 const userModel = require('../models/userModel');
 const { Product } = require('../models');
 
+const getProductById = async (productId)=>{
+  const product = await Product.findOne({productId: productId});
+  return product;
+}
 const getProducts = async ()=>{
   const products = await Product.find();
   if(!products) throw new Error('Server Error');
@@ -18,4 +22,4 @@ const updateProduct = async (productType,product,email)=>{
   }
 }
 
-module.exports = { getProducts,updateProduct };
+module.exports = { getProducts,updateProduct,getProductById };

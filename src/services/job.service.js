@@ -12,11 +12,12 @@ const createJob= async (jobBody,userId)=>{
   return {
     "status":true,
     "message": "Successfully posted job",
+    "jobId": job._id,
   };
 }
 
 const getJobs=async (page)=>{
-  const jobs= await Job.find({'status':'Approved'}).skip(page).limit(parseInt(PageDefaultLimit));
+  const jobs= await Job.find({'status':'Approved',paymentStatus:true}).skip(page).limit(parseInt(PageDefaultLimit));
   return jobs;
 }
 const getJobsById=async(user,page) =>{
@@ -26,6 +27,7 @@ const getRecomendedJobs=async() =>{
   return Job.find({
     $and:[
     { status:'Approved'},
+    {paymentStatus:true},
     { $or :[
       { productType: 'Diamond'},
       {productType: 'Platinum'}

@@ -4,8 +4,9 @@ const config = require('../config/config');
 const moment = require('moment');
 const { regularPayment } = require('./paymentUtils/regular.payment');
 const { createSession, validateSession } = require('./paymentUtils/stripe.session');
-const { createJob } = require('./job.service');
+const { createJob, getJobByJobId } = require('./job.service');
 const { sendMail } = require('./email.service');
+const { getProductById } = require('./product.service');
 
 const checkout = async (form,product,email,userId) => {
   if(await userModel.isAdmin(email)){
@@ -32,29 +33,30 @@ const checkout = async (form,product,email,userId) => {
   if(product.type==='Regular'){
     return await regularPayment(form,product,userId,email);
   }
-  return await createSession(form,product,email);
+  return await createSession(form,product,email,userId);
 };
 
-const success = async (session_id,product,form,userId,email) => {
-  if(!session_id || !product || !form){
+const success = async (session_id,productId,jobId,email) => {
+  if(!session_id || !productId || !jobId){
     return {
       "url": `${config.frontendUrl}/#/cancel`,
       "message": "Failed to Post Job Try Again Later",
     }
   }
-  const status = await  validateSession(session_id,product,form,userId);
+  const {status, product} = await  validateSession(session_id,productId,jobId);
   if(!status){
     return {
       "url": `${config.frontendUrl}/#/cancel`,
       "message": "Failed to Post Job Try Again Later",
     }
   }
+  const job = await getJobByJobId(jobId);
 
   const { fromemail } = config;
-  const data ='Request for posting Job '+form.job.title+' under '+product.type+' category by '+email+
+  const data ='Request for posting Job '+job.job.title+' under '+product.type+' category by '+email+
   ' is succesfull \n\n'+' You will receive confirmation mail regarding the status of job shortly'+
   ' you can check status of job in your dashboard  '+`${config.frontendUrl}/#/userdashboard`
-  const subject = 'Request of Posting a Job '+form.job.title;
+  const subject = 'Request of Posting a Job '+job.job.title;
   const mailStatus = await sendMail(fromemail,email,data,subject);
   
   return {

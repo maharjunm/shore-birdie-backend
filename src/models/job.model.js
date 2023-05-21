@@ -63,6 +63,10 @@ const jobSchema = new Schema({
   productType:{
     type:String,
     enum:['Regular' ,'Platinum', 'Diamond']
+  },
+  paymentStatus:{
+    type: Boolean,
+    default: false,
   }
 });
 
