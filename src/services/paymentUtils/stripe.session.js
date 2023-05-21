@@ -11,7 +11,7 @@ const createSession = async (form,product, email,userId) => {
   form.dates.postingDate = moment(Date.now());
   form.dates.expiryDate = moment(Date.now()).add(product.hostingTime,'days');
   form.productType=product.type;
-  const {jobId} = await createJob(form,userId);
+  const {jobId} = form._id?form._id:await createJob(form,userId);
   console.log(jobId);
   const session = await stripe.checkout.sessions.create({
     line_items: [
