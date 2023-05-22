@@ -18,7 +18,7 @@ const updateJobStatus= async(jobId,status)=>{
     const { fromemail } = config;
     const data ='Your request of job '+updatedJob.job.title+
     ' has been '+status+' by ADMIN '+
-    ' you can check your posted job status in  dashboard  '+`${config.frontendUrl}`
+    ' you can check your posted job status in  dashboard  '+`${config.frontendUrl}/#/job/${updatedJob._id}`
     const subject = 'Request of Posting a Job '+updatedJob.job.title;
     const user = await userModel.findOne({userId:job.createdBy});
     const mailStatus = await sendMail(fromemail,user.email,data,subject);
