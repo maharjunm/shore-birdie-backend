@@ -29,10 +29,37 @@ const search = catchAsync(async (req,res)=>{
   const jobs = await jobService.search(search);
   res.send(jobs);
 })
+
+const getEachTitleCount = catchAsync( async (req,res)=>{
+  const highlights = await jobService.getEachTitleCount();
+  res.send(highlights);
+})
+
+const getDiciplines = catchAsync(async (req,res)=>{
+  const discipline = await jobService.getDiciplines();
+  res.send(discipline);
+})
+const getSectors = catchAsync(async (req,res)=>{
+  const sectors = await jobService.getSectors();
+  res.send(sectors);
+})
+const getRegions = catchAsync(async (req,res)=>{
+  const regions = await jobService.getRegions();
+  res.send(regions);
+})
+const getTitles = catchAsync(async (req,res)=>{
+  const titles = await jobService.getTitles();
+  res.send(titles);
+})
 module.exports={
   getJobs,
   getJobsCreatedById,
   getRecomendedJobs,
   getJobByJobId,
-  search
+  search,
+  getEachTitleCount,
+  getDiciplines,
+  getSectors,
+  getRegions,
+  getTitles,
 }

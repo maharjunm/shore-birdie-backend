@@ -8,6 +8,7 @@ const contactRoute=require('./contact.route');
 const userRouter = require('./userRouter');
 const adminRouter =require('./admin.router');
 const productRouter =require('./product.router');
+const utilsRouter =require('./utils.router');
 
 const router = express.Router();
 
@@ -43,6 +44,10 @@ const defaultRoutes = [
   {
     path: '/products',
     route: productRouter,
+  },
+  {
+    path:'/utils',
+    route: utilsRouter,
   }
 ];
 

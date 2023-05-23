@@ -56,10 +56,31 @@ const getRegions = () => {
   const regions = ['North America','Europe','Asia','South America','Asia Pacific','Australia','Middle East','Oceania','Working from home'];
   return regions;
 }
+const getTitles = () => {
+  const titles = ['Academic Dean/Dept. Head','Faculty','Group Leader/Principal Invesigator','Lab Manager',
+  'Lecturer/Senior Lecturer','Manager','Medical Doctor','PhD Fellowship','PhD Studentship',
+  'Postdoc Fellowship','President/CEO/Director/VP','Project Manager','Research Scientist','Senior Scientist',
+  'Staff Scientist','Student Fellowship','Technician'];
+  return titles;
+}
+
+const getEachTitleCount = async () =>{
+  const titleCounts = await Job.aggregate([
+    {
+      $group : {
+        _id: "$job.title",
+        count:{$sum:1}
+      }
+    },
+  ]);
+  return titleCounts;
+}
+
 const search = async (search) => {
   const dis = search.discipline.length==0? getDiciplines():search.discipline;
   const sectors = search.sector.length==0? getSectors() :search.sector;
-  const regions = search.country.length==0? getRegions():search.country ;
+  const regions = search.region.length==0? getRegions():search.region ;
+  const titles = search.title.length==0? getTitles(): search.title;
   const atleastSalary = search.salary?search.salary:0; 
 
   const jobs = await Job.aggregate([
@@ -73,6 +94,9 @@ const search = async (search) => {
         },
         "location.region":{
           $in: [...regions]
+        },
+        "job.title":{
+          $in:[...titles]
         },
         $and:[
           {"job.title":{
@@ -99,4 +123,9 @@ module.exports={
   getRecomendedJobs,
   getJobByJobId,
   search,
+  getEachTitleCount,
+  getDiciplines,
+  getSectors,
+  getRegions,
+  getTitles,
 }
