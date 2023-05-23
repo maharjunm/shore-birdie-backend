@@ -105,6 +105,9 @@ const search = async (search) => {
           {"location.city":{
             $regex :search.location?search.location:"" , $options:"i"
           }},
+          {"company.name":{
+            $regex :search.company?search.company:"" , $options:"i"
+          }},
           {"salary.sal":{
             $gt: atleastSalary
           }},
