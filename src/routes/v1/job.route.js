@@ -19,6 +19,9 @@ router
 router
   .route('/search')
   .get(jobController.search);
+router
+  .route('/highlights')
+  .get(jobController.getEachTitleCount);
 
 
 
