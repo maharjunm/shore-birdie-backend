@@ -26,6 +26,7 @@ const jobSchema = new Schema({
     closingDate: { type: Date, required: true },
   },
   salary: {
+    currency: { type: String, required: true},
     sal: { type: Number, required: true },
     hours: { type: Number, required: true },
     companyType: { type: String, enum: ['Annual', 'Regular', 'Monthly', 'Quarterly'], required: true },
