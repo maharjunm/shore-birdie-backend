@@ -31,7 +31,7 @@ const signup = async (req,res)=>{
 
     const token = jwt.sign({email :result.email,id : result._id},auth);
     res.status(201).json({token :token});
-
+    
   }
   catch(error){
     console.log(error)
