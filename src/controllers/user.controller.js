@@ -34,10 +34,18 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const resetPassword = catchAsync(async (req,res) => {
+  const passwords = req.body;
+  const userId=req.cookies.userId;
+  const status = await userService.resetPassword(userId,passwords);
+  res.send(status);
+})
+
 module.exports = {
   createUser,
   getUsers,
   getUser,
   updateUser,
   deleteUser,
+  resetPassword,
 };
