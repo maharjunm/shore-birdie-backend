@@ -10,7 +10,7 @@ userRouter.post('/signup', signup);
 userRouter.post('/login', login);
 
 userRouter.post('/logout',authValidate, logout);
-userRouter.post('/resetpassword',authValidate,userController.resetPassword );
+userRouter.post('/changepassword',authValidate,userController.resetPassword );
 
 userRouter.get('/',authValidate,(req,res)=>{
   res.json({
