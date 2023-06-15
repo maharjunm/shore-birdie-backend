@@ -3,6 +3,9 @@ const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { userService } = require('../services');
+const config = require('../config/config');
+const moment = require('moment');
+
 
 const createUser = catchAsync(async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -34,6 +37,59 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const signup = catchAsync(async (req, res) => {
+  const {username,token,email,userId,isAdmin} = await userService.signup(req.body);
+  res.cookie('username',username,{
+    expires: new Date(moment (Date.now()).add(config.tokenExpiryDays,'days')),
+    httpOnly: true,
+    secure: true,
+  }).cookie('jwtoken',token,{
+    expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
+    httpOnly: true,
+    secure: true,
+  }).cookie('email',email,{
+    expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
+    httpOnly: true,
+    secure: true,
+  }).cookie('userId',userId,{
+    expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
+    httpOnly: true,
+    secure: true,
+  });
+  res.status(200).json({ token: token,isAdmin: isAdmin });
+});
+
+const login = catchAsync(async (req, res) => {
+  const {username,token,email,userId,isAdmin, status,message} = await userService.login(req.body);
+  res.cookie('username',username,{
+    expires: new Date(moment (Date.now()).add(config.tokenExpiryDays,'days')),
+    httpOnly: true,
+    secure: true,
+  }).cookie('jwtoken',token,{
+    expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
+    httpOnly: true,
+    secure: true,
+  }).cookie('email',email,{
+    expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
+    httpOnly: true,
+    secure: true,
+  }).cookie('userId',userId,{
+    expires: new Date(moment(Date.now()).add(config.tokenExpiryDays,'days')),
+    httpOnly: true,
+    secure: true,
+  });
+  res.status(200).json({ token: token,isAdmin: isAdmin });
+});
+
+const logout = catchAsync(async (req,res)=>{
+  const { jwtoken, email, username, userId } = req.cookies;
+  jwtoken && res.clearCookie('username',{path:'/'});
+  email && res.clearCookie('jwtoken',{path:'/'});
+  username && res.clearCookie('email',{path:'/'});
+  userId && res.clearCookie('userId',{path:'/'});
+  res.status(200).send('user Logout');
+ 
+})
 const resetPassword = catchAsync(async (req,res) => {
   const passwords = req.body;
   const userId=req.cookies.userId;
@@ -48,4 +104,7 @@ module.exports = {
   updateUser,
   deleteUser,
   resetPassword,
+  signup,
+  login,
+  logout
 };

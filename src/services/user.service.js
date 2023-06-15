@@ -3,6 +3,12 @@ const { User } = require('../models');
 const userModel = require('../models/userModel');
 const ApiError = require('../utils/ApiError');
 const bcryptjs = require('bcryptjs');
+const { connect } = require('mongoose');
+const jwt = require('jsonwebtoken');
+const { auth } = require('../config/config');
+const moment = require('moment');
+const config = require('../config/config');
+const { v4: uuidv4 } = require('uuid');
 
 /**
  * Create a user
@@ -100,6 +106,49 @@ const resetPassword = async (userId,passwords)=>{
   }
 }
 
+const signup = async (body)=>{
+  const {username,email,password} = body;
+  const exsistingUser = await userModel.findOne({email: email});
+  if(exsistingUser){
+    throw Error('user already exsist');
+  }
+  const hashedPassword = await bcryptjs.hash(password,10);
+  const result = await userModel.create({
+    email : email,
+    password :hashedPassword,
+    username : username,
+    userId : uuidv4(),
+  });
+  const token = jwt.sign({email :result.email,id : result._id},auth);
+  const isAdmin = await userModel.isAdmin(email);
+  const { userId } = exsistingUser;
+  return {username,token,email,userId,isAdmin}; 
+}
+
+const login = async (body)=>{
+  const { email , password } = body;
+  const exsistingUser = await userModel.findOne({email : email});
+  if(!exsistingUser){
+    throw Error('user not found');
+  }
+  const matchPassword = await bcryptjs.compare(password,exsistingUser.password);
+  if(!matchPassword){
+    throw Error('Given Password is Wrong');
+  }
+  const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
+  const isAdmin = await userModel.isAdmin(email);
+  const { username, userId} =  exsistingUser;
+  return { username,token,email,userId,isAdmin};
+}
+
+const logout = async (cookies)=>{
+  const { jwtoken, email, username, userId } = req.cookies;
+  jwtoken && res.clearCookie('username',{path:'/'});
+  email && res.clearCookie('jwtoken',{path:'/'});
+  username && res.clearCookie('email',{path:'/'});
+  userId && res.clearCookie('userId',{path:'/'});
+  res.status(200).send('user Logout');
+}
 module.exports = {
   createUser,
   queryUsers,
@@ -108,4 +157,7 @@ module.exports = {
   updateUserById,
   deleteUserById,
   resetPassword,
+  login, 
+  signup,
+  logout,
 };
