@@ -140,15 +140,6 @@ const login = async (body)=>{
   const { username, userId} =  exsistingUser;
   return { username,token,email,userId,isAdmin};
 }
-
-const logout = async (cookies)=>{
-  const { jwtoken, email, username, userId } = req.cookies;
-  jwtoken && res.clearCookie('username',{path:'/'});
-  email && res.clearCookie('jwtoken',{path:'/'});
-  username && res.clearCookie('email',{path:'/'});
-  userId && res.clearCookie('userId',{path:'/'});
-  res.status(200).send('user Logout');
-}
 module.exports = {
   createUser,
   queryUsers,
@@ -159,5 +150,4 @@ module.exports = {
   resetPassword,
   login, 
   signup,
-  logout,
 };
