@@ -129,11 +129,11 @@ const login = async (body)=>{
   const { email , password } = body;
   const exsistingUser = await userModel.findOne({email : email});
   if(!exsistingUser){
-    throw Error('user not found');
+    throw new Error('user not found');
   }
   const matchPassword = await bcryptjs.compare(password,exsistingUser.password);
   if(!matchPassword){
-    throw Error('Given Password is Wrong');
+    throw new Error('Given Password is Wrong');
   }
   const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
   const isAdmin = await userModel.isAdmin(email);
