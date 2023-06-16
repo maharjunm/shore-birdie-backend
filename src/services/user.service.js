@@ -1,6 +1,8 @@
 const httpStatus = require('http-status');
 const { User } = require('../models');
+const userModel = require('../models/userModel');
 const ApiError = require('../utils/ApiError');
+const bcryptjs = require('bcryptjs');
 
 /**
  * Create a user
@@ -79,6 +81,25 @@ const deleteUserById = async (userId) => {
   return user;
 };
 
+const resetPassword = async (userId,passwords)=>{
+  const { oldPassword, newPassword } = passwords;
+  const exsistingUser = await userModel.findOne({userId : userId});
+  if(!exsistingUser){
+    throw new Error('User Does not exist');
+  }
+  const matchPassword = await bcryptjs.compare(oldPassword,exsistingUser.password);
+  if(!matchPassword){
+    throw new Error('Incorrect Password');
+  }
+  const hashedPassword = await bcryptjs.hash(newPassword,10);
+  exsistingUser.password = hashedPassword;
+  await exsistingUser.save();
+  return {
+    "status":true,
+    "message":"Password Changed Successfully",
+  }
+}
+
 module.exports = {
   createUser,
   queryUsers,
@@ -86,4 +107,5 @@ module.exports = {
   getUserByEmail,
   updateUserById,
   deleteUserById,
+  resetPassword,
 };
