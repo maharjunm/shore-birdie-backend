@@ -126,7 +126,7 @@ const signup = async (body)=>{
   const isAdmin = await userModel.isAdmin(email);
   const user = await userModel.findOne({email: email});
   const { userId } = user;
-  return {username,token,email,userId,isAdmin,status:200,message:"successfull signup"}; 
+  return {username,token,email,userId,isAdmin,status:201,message:"successfull signup"}; 
 }
 
 const login = async (body)=>{
