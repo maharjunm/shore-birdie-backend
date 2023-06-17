@@ -38,7 +38,12 @@ const deleteUser = catchAsync(async (req, res) => {
 });
 
 const signup = catchAsync(async (req, res) => {
-  const {username,token,email,userId,isAdmin} = await userService.signup(req.body);
+  const signupStatus = await userService.signup(req.body);
+  const {username,token,email,userId,isAdmin,status,message} = signupStatus;
+  if(!status){
+    res.status(400).json(loginStatus);
+    return;
+  }
   res.cookie('username',username,{
     expires: new Date(moment (Date.now()).add(config.tokenExpiryDays,'days')),
     httpOnly: true,
@@ -56,14 +61,16 @@ const signup = catchAsync(async (req, res) => {
     httpOnly: true,
     secure: true,
   });
-  res.json({ token: token,isAdmin: isAdmin });
+  res.status(200).json({ token: token,isAdmin: isAdmin });
 });
 
 const login = catchAsync(async (req, res) => {
-  const b = await userService.login(req.body);
-  console.log(b);
-  const {username,token,email,userId,isAdmin, status,message} = b;
-
+  const loginStatus = await userService.login(req.body);
+  const {username,token,email,userId,isAdmin, status,message} = loginStatus;
+  if(!status){
+    res.status(400).json(loginStatus);
+    return;
+  }
   res.cookie('username',username,{
     expires: new Date(moment (Date.now()).add(config.tokenExpiryDays,'days')),
     httpOnly: true,
@@ -81,7 +88,7 @@ const login = catchAsync(async (req, res) => {
     httpOnly: true,
     secure: true,
   });
-  res.json({ token: token,isAdmin: isAdmin });
+  res.status(200).json({ token: token,isAdmin: isAdmin });
 });
 
 const logout = catchAsync(async (req,res)=>{
