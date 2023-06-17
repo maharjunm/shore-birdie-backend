@@ -122,7 +122,7 @@ const signup = async (body)=>{
   const token = jwt.sign({email :result.email,id : result._id},auth);
   const isAdmin = await userModel.isAdmin(email);
   const { userId } = exsistingUser;
-  return {username,token,email,userId,isAdmin}; 
+  return {username,token,email,userId,isAdmin,status:200,message:"successfull signup"}; 
 }
 
 const login = async (body)=>{
@@ -138,7 +138,7 @@ const login = async (body)=>{
   const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
   const isAdmin = await userModel.isAdmin(email);
   const { username, userId} =  exsistingUser;
-  return { username,token,email,userId,isAdmin};
+  return { username,token,email,userId,isAdmin,status:200,message:"successfull login"};
 }
 module.exports = {
   createUser,
