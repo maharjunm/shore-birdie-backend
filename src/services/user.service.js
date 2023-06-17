@@ -113,7 +113,7 @@ const signup = async (body)=>{
   const {username,email,password} = body;
   const exsistingUser = await userModel.findOne({email: email});
   if(exsistingUser){
-    return {username,token,email,userId,isAdmin,status:400,message:"user already exist"};
+    return {status:400,message:"user already exist"};
   }
   const hashedPassword = await bcryptjs.hash(password,10);
   const result = await userModel.create({
@@ -124,7 +124,8 @@ const signup = async (body)=>{
   });
   const token = jwt.sign({email :result.email,id : result._id},auth);
   const isAdmin = await userModel.isAdmin(email);
-  const { userId } = exsistingUser;
+  const user = await userModel.findOne({email: email});
+  const { userId } = user;
   return {username,token,email,userId,isAdmin,status:200,message:"successfull signup"}; 
 }
 
