@@ -95,8 +95,9 @@ const logout = catchAsync(async (req,res)=>{
 const resetPassword = catchAsync(async (req,res) => {
   const passwords = req.body;
   const userId=req.cookies.userId;
-  const status = await userService.resetPassword(userId,passwords);
-  res.send(status);
+  const resetStatus = await userService.resetPassword(userId,passwords);
+  const { status,message} = resetStatus;
+  res.status(status).json(resetStatus);
 })
 
 module.exports = {
