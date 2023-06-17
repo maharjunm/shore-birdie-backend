@@ -56,11 +56,14 @@ const signup = catchAsync(async (req, res) => {
     httpOnly: true,
     secure: true,
   });
-  res.status(200).json({ token: token,isAdmin: isAdmin });
+  res.json({ token: token,isAdmin: isAdmin });
 });
 
 const login = catchAsync(async (req, res) => {
-  const {username,token,email,userId,isAdmin, status,message} = await userService.login(req.body);
+  const b = await userService.login(req.body);
+  console.log(b);
+  const {username,token,email,userId,isAdmin, status,message} = b;
+
   res.cookie('username',username,{
     expires: new Date(moment (Date.now()).add(config.tokenExpiryDays,'days')),
     httpOnly: true,
@@ -78,7 +81,7 @@ const login = catchAsync(async (req, res) => {
     httpOnly: true,
     secure: true,
   });
-  res.status(200).json({ token: token,isAdmin: isAdmin });
+  res.json({ token: token,isAdmin: isAdmin });
 });
 
 const logout = catchAsync(async (req,res)=>{
