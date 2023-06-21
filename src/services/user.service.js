@@ -3,6 +3,12 @@ const { User } = require('../models');
 const userModel = require('../models/userModel');
 const ApiError = require('../utils/ApiError');
 const bcryptjs = require('bcryptjs');
+const { connect } = require('mongoose');
+const jwt = require('jsonwebtoken');
+const { auth } = require('../config/config');
+const moment = require('moment');
+const config = require('../config/config');
+const { v4: uuidv4 } = require('uuid');
 
 /**
  * Create a user
@@ -85,21 +91,59 @@ const resetPassword = async (userId,passwords)=>{
   const { oldPassword, newPassword } = passwords;
   const exsistingUser = await userModel.findOne({userId : userId});
   if(!exsistingUser){
-    throw new Error('User Does not exist');
+    return {
+      status:400,message:"user does not exist",
+    }
   }
   const matchPassword = await bcryptjs.compare(oldPassword,exsistingUser.password);
   if(!matchPassword){
-    throw new Error('Incorrect Password');
+    return {
+      status:400,message:"Incorrect password",
+    }
   }
   const hashedPassword = await bcryptjs.hash(newPassword,10);
   exsistingUser.password = hashedPassword;
   await exsistingUser.save();
   return {
-    "status":true,
-    "message":"Password Changed Successfully",
+    status:200,message:"Password Changed Successfully",
   }
 }
 
+const signup = async (body)=>{
+  const {username,email,password} = body;
+  const exsistingUser = await userModel.findOne({email: email});
+  if(exsistingUser){
+    return {status:400,message:"user already exist"};
+  }
+  const hashedPassword = await bcryptjs.hash(password,10);
+  const result = await userModel.create({
+    email : email,
+    password :hashedPassword,
+    username : username,
+    userId : uuidv4(),
+  });
+  const token = jwt.sign({email :result.email,id : result._id},auth);
+  const isAdmin = await userModel.isAdmin(email);
+  const user = await userModel.findOne({email: email});
+  const { userId } = user;
+  return {username,token,email,userId,isAdmin,status:201,message:"successfull signup"}; 
+}
+
+const login = async (body)=>{
+  const { email , password } = body;
+  const exsistingUser = await userModel.findOne({email : email});
+  if(!exsistingUser){
+    return {status:400,message:"user not found"};
+  }
+  const matchPassword = await bcryptjs.compare(password,exsistingUser.password);
+  if(!matchPassword){
+    return {status:400,message:"Given Password is Wrong"};
+  }
+  const token = jwt.sign({email : exsistingUser.email, id : exsistingUser._id},auth);
+  const isAdmin = await userModel.isAdmin(email);
+  const { username, userId} =  exsistingUser;
+  return { username,token,email,userId,isAdmin,status:200,message:"successfull login"};
+}
 module.exports = {
   createUser,
   queryUsers,
@@ -108,4 +152,6 @@ module.exports = {
   updateUserById,
   deleteUserById,
   resetPassword,
+  login, 
+  signup,
 };

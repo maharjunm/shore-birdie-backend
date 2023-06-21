@@ -5,7 +5,6 @@ const testRoute = require('./test.route');
 const config = require('../../config/config');
 const jobRoute=require('./job.route');
 const contactRoute=require('./contact.route');
-const userRouter = require('./userRouter');
 const adminRouter =require('./admin.router');
 const productRouter =require('./product.router');
 const utilsRouter =require('./utils.router');
@@ -31,7 +30,7 @@ const defaultRoutes = [
   },
   {
     path: '/user',
-    route: userRouter,
+    route: userRoute,
   },
   {
     path: '/contact',
